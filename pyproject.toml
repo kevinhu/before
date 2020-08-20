@@ -8,8 +8,10 @@ authors = ["Kevin Hu <kevinhuwest@gmail.com>"]
 python = "^3.8"
 requests = "^2.24.0"
 ujson = "^3.1.0"
-ratelimit = "^2.2.1"
 pre-commit = "^2.6.0"
+jupyter = "^1.0.0"
+ratelimit = "^2.2.1"
+pandas = "^1.1.0"
 
 [tool.poetry.dev-dependencies]
 
