@@ -12,6 +12,8 @@ pre-commit = "^2.6.0"
 jupyter = "^1.0.0"
 ratelimit = "^2.2.1"
 pandas = "^1.1.0"
+tqdm = "^4.48.2"
+pyarrow = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 

@@ -75,4 +75,4 @@ start_time = datetime.today()
 
 query = {"query": "github.com", "hitsPerPage": 1000}
 
-fetch_since(start_time, earliest, query, "/raw/hn_github")
+fetch_since(start_time, earliest, query, "/raw/hackernews_github")
