@@ -117,7 +117,7 @@ function CalendarGrid() {
   };
 
   const slidePositioning = "relative flex align-center justify-center origin-center"
-  const slideAesthetics = "shadow-2xl bg-white rounded-lg py-48"
+  const slideAesthetics = "shadow-2xl bg-white rounded-lg py-48 transition ease-in duration-200 dark:bg-gray-800 dark:text-white"
 
   return (
     <div className="bg-gray-200">
