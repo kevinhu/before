@@ -116,6 +116,9 @@ function CalendarGrid() {
     LAST_WEEK: prevWeek,
   };
 
+  const slidePositioning = "relative flex align-center justify-center origin-center"
+  const slideAesthetics = "shadow-2xl bg-white rounded-lg py-48"
+
   return (
     <div className="bg-gray-200">
       <GlobalHotKeys keyMap={keyMap} handlers={handlers} style={{outline:"none"}} />
@@ -144,8 +147,12 @@ function CalendarGrid() {
           ))}
         </div>
 
-      <div className="text-center mt-12">
-        Top pages on {selectedDate && selectedDate.format('L')}{' '}
+      <div className="flex items-center justify-center w-screen pt-12 pb-12" >
+        <div className={`text-center w-11/12 max-w-screen-md ${slideAesthetics} ${slidePositioning}`}>
+          <div>
+            Top pages on {selectedDate && selectedDate.format('L')}{' '}
+          </div>
+        </div>
       </div>
     </div>
   );
