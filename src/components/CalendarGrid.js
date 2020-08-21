@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import chroma from 'chroma-js'
 
 function CalendarGrid() {
   let enumerateDaysBetweenDates = function (startDate, endDate) {
@@ -64,6 +65,8 @@ function CalendarGrid() {
   const gridSizing = 'w-4 h-4 rounded';
   const gridTransition = 'transition ease-in duration-200';
 
+  const monthColors = new Array(12).fill(["#00bcd4","#a6dcef"]).flat();
+
   return (
     <div className="bg-gray-200">
       <div
@@ -76,11 +79,10 @@ function CalendarGrid() {
 
               return (
                 <div
-                  className={`cursor-pointer shadow ${gridSizing} ${gridTransition}`}
+                  className={`cursor-pointer ${gridSizing} ${gridTransition}`}
                   style={{
                     margin: '2px',
-                    backgroundColor: isSameDay ? '#dcd6f7' : '#f4eeff',
-                    outline: 'none',
+                    backgroundColor: isSameDay ? 'black' : monthColors[date.month()],
                   }}
                   data-date={date}
                   onClick={gridClick}></div>
