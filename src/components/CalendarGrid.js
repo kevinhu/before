@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 
 function CalendarGrid() {
-  const [selectedDate, setSelectedDate] = useState();
 
   let enumerateDaysBetweenDates = function (startDate, endDate) {
     let dates = [];
@@ -65,6 +64,8 @@ function CalendarGrid() {
     // console.log(event.target.dataset)
   };
 
+  const [selectedDate, setSelectedDate] = useState(datesByWeek[0][0]);
+  
   return (
     <div>
       <div
@@ -74,7 +75,7 @@ function CalendarGrid() {
           <div className={`block`}>
             {week.map((date) => (
               <div
-                className={`block bg-green-500 w-4 h-4 rounded text-xs cursor-pointer`}
+                className={`block bg-green-500 hover:bg-green-200 w-4 h-4 rounded text-xs cursor-pointer`}
                 style={{ margin: '2px' }}
                 data-date={date}
                 onMouseEnter={GridMouseEnter}
