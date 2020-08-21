@@ -1,6 +1,6 @@
 module.exports = {
-	extends: ["eslint:recommended", "google", "prettier"],
-	rules: {},
+	extends: ["eslint:recommended", "google", "prettier", "plugin:react/recommended"],
+	rules: {"require-jsdoc" : 0},
 	parser: "babel-eslint",
 
 	// get rid of 'console' not defined errors

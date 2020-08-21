@@ -1,14 +1,10 @@
-import {
-  Route,
-} from 'react-router-dom';
+import React from 'react';
+
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Explore from './pages/Explore';
 import NotFound from './pages/NotFound';
 
-/*
- * Master app function
- *
- */
 function App() {
   return (
     <Router>

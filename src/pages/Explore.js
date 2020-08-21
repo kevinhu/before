@@ -1,8 +1,12 @@
 import React from 'react';
 
+import CalendarGrid from "../components/CalendarGrid"
+
 function Explore() {
   return (
-    <div>Hello!</div>
+    <div className="mt-12">
+    <CalendarGrid />
+    </div>
   );
 }
 
