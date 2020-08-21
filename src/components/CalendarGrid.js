@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import chroma from 'chroma-js';
 import { GlobalHotKeys } from 'react-hotkeys';
+import ReactTooltip from 'react-tooltip';
 
 function CalendarGrid() {
   let enumerateDaysBetweenDates = function (startDate, endDate) {
@@ -106,7 +107,7 @@ function CalendarGrid() {
     TOMORROW: ['down'],
     YESTERDAY: ['up'],
     NEXT_WEEK: ['right'],
-    LAST_WEEK: ['left']
+    LAST_WEEK: ['left'],
   };
 
   const handlers = {
@@ -116,44 +117,51 @@ function CalendarGrid() {
     LAST_WEEK: prevWeek,
   };
 
-  const slidePositioning = "relative flex align-center justify-center origin-center"
-  const slideAesthetics = "shadow-2xl bg-white rounded-lg py-48"
-  const slideDark = "dark:bg-gray-800 dark:text-white"
-  const slideTransition = "transition ease-in duration-200"
+  const slidePositioning =
+    'relative flex align-center justify-center origin-center';
+  const slideAesthetics = 'shadow-2xl bg-white rounded-lg py-48';
+  const slideDark = 'dark:bg-gray-800 dark:text-white';
+  const slideTransition = 'transition ease-in duration-200';
 
   return (
     <div className="bg-gray-200 dark:bg-gray-700 min-h-full">
-      <GlobalHotKeys keyMap={keyMap} handlers={handlers} style={{outline:"none"}} />
-        <div
-          className="flex p-2 rounded-lg shadow-xl bg-white dark:bg-gray-800"
-          style={{ width: 'max-content', margin: '0 auto' }}>
-          {datesByWeek.map((week) => (
-            <div className={`block`}>
-              {week.map((date) => {
-                const isSameDay = date.isSame(selectedDate, 'day');
+      <GlobalHotKeys
+        keyMap={keyMap}
+        handlers={handlers}
+        style={{ outline: 'none' }}
+      />
+      <ReactTooltip effect="solid"/>
 
-                return (
-                  <div
-                    className={`cursor-pointer ${gridSizing} ${gridTransition}`}
-                    style={{
-                      margin: '2px',
-                      backgroundColor: isSameDay
-                        ? '#f25d9c'
-                        : monthColors[date.month()],
-                    }}
-                    data-date={date}
-                    onClick={gridClick}></div>
-                );
-              })}
-            </div>
-          ))}
-        </div>
+      <div
+        className="flex p-2 rounded-lg shadow-xl bg-white dark:bg-gray-800"
+        style={{ width: 'max-content', margin: '0 auto' }}>
+        {datesByWeek.map((week) => (
+          <div className={`block`}>
+            {week.map((date) => {
+              const isSameDay = date.isSame(selectedDate, 'day');
 
-      <div className="flex items-center justify-center w-screen pt-12 pb-12" >
-        <div className={`text-center w-11/12 max-w-screen-md ${slideAesthetics} ${slidePositioning} ${slideDark} ${slideTransition}`}>
-          <div>
-            Top pages on {selectedDate && selectedDate.format('L')}{' '}
+              return (
+                <div
+                  className={`cursor-pointer ${gridSizing} ${gridTransition}`}
+                  style={{
+                    margin: '2px',
+                    backgroundColor: isSameDay
+                      ? '#f25d9c'
+                      : monthColors[date.month()],
+                  }}
+                  data-date={date}
+                  data-tip={date.format("MMMM Do, YYYY")}
+                  onClick={gridClick}></div>
+              );
+            })}
           </div>
+        ))}
+      </div>
+
+      <div className="flex items-center justify-center w-screen pt-12 pb-12">
+        <div
+          className={`text-center w-11/12 max-w-screen-md ${slideAesthetics} ${slidePositioning} ${slideDark} ${slideTransition}`}>
+          <div>Top pages on {selectedDate && selectedDate.format('L')} </div>
         </div>
       </div>
     </div>
