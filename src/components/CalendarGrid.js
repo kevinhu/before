@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 
 function CalendarGrid() {
-
   let enumerateDaysBetweenDates = function (startDate, endDate) {
     let dates = [];
 
@@ -54,33 +53,39 @@ function CalendarGrid() {
     lastWeek.push(lastWeek.slice(-1)[0].clone().add(1, 'days'));
   }
 
-  const GridMouseEnter = (event) => {
+  const gridClick = (event) => {
     const date = moment(parseInt(event.target.dataset.date));
 
     setSelectedDate(date);
   };
 
-  const GridMouseLeave = (event) => {
-    // console.log(event.target.dataset)
-  };
-
   const [selectedDate, setSelectedDate] = useState(datesByWeek[0][0]);
-  
+
+  const gridSizing = 'w-4 h-4 rounded';
+  const gridTransition = 'transition ease-in duration-200';
+
   return (
-    <div>
+    <div className="bg-gray-200">
       <div
-        className="flex p-2 bg-gray-200 rounded-lg shadow-inner"
+        className="flex p-2 rounded-lg shadow-inner bg-white"
         style={{ width: 'max-content', margin: '0 auto' }}>
         {datesByWeek.map((week) => (
           <div className={`block`}>
-            {week.map((date) => (
-              <div
-                className={`block bg-green-500 hover:bg-green-200 w-4 h-4 rounded text-xs cursor-pointer`}
-                style={{ margin: '2px' }}
-                data-date={date}
-                onMouseEnter={GridMouseEnter}
-                onMouseLeave={GridMouseLeave}></div>
-            ))}
+            {week.map((date) => {
+              const isSameDay = date.isSame(selectedDate, 'day');
+
+              return (
+                <div
+                  className={`cursor-pointer shadow ${gridSizing} ${gridTransition}`}
+                  style={{
+                    margin: '2px',
+                    backgroundColor: isSameDay ? '#dcd6f7' : '#f4eeff',
+                    outline: 'none',
+                  }}
+                  data-date={date}
+                  onClick={gridClick}></div>
+              );
+            })}
           </div>
         ))}
       </div>
