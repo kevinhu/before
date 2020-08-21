@@ -2,9 +2,13 @@ import React from 'react';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
+// Import pages
 import Explore from './pages/Explore';
 import NotFound from './pages/NotFound';
+
+// Import dark mode
 import { useDarkMode } from './components/DarkMode';
+import DarkModeToggle from 'react-dark-mode-toggle';
 
 function App() {
   const [theme, toggleTheme, componentMounted] = useDarkMode();
@@ -21,7 +25,14 @@ function App() {
 
   return (
     <Router>
-      <div onClick={toggleTheme}>Toggle dark mode</div>
+      <div className="text-center w-screen pt-8 bg-gray-200 dark:bg-gray-700">
+        <DarkModeToggle
+          onChange={toggleTheme}
+          checked={theme === 'dark'}
+          size={50}
+          speed={5}
+        />
+      </div>
       <Switch>
         {/* Public Routes */}
         <Route exact path="/before">

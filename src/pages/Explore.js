@@ -6,7 +6,7 @@ import { useDarkMode } from '../components/DarkMode';
 function Explore() {
 	const [theme, toggleTheme, componentMounted] = useDarkMode();
 	return (
-		<div className="pt-12 bg-gray-200">
+		<div className="pt-15 bg-gray-200">
 			<CalendarGrid />
 		</div>
 	);

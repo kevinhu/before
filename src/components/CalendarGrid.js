@@ -117,13 +117,15 @@ function CalendarGrid() {
   };
 
   const slidePositioning = "relative flex align-center justify-center origin-center"
-  const slideAesthetics = "shadow-2xl bg-white rounded-lg py-48 transition ease-in duration-200 dark:bg-gray-800 dark:text-white"
+  const slideAesthetics = "shadow-2xl bg-white rounded-lg py-48"
+  const slideDark = "dark:bg-gray-800 dark:text-white"
+  const slideTransition = "transition ease-in duration-200"
 
   return (
-    <div className="bg-gray-200">
+    <div className="bg-gray-200 dark:bg-gray-700">
       <GlobalHotKeys keyMap={keyMap} handlers={handlers} style={{outline:"none"}} />
         <div
-          className="flex p-2 rounded-lg shadow-xl bg-white"
+          className="flex p-2 rounded-lg shadow-xl bg-white dark:bg-gray-800"
           style={{ width: 'max-content', margin: '0 auto' }}>
           {datesByWeek.map((week) => (
             <div className={`block`}>
@@ -136,7 +138,7 @@ function CalendarGrid() {
                     style={{
                       margin: '2px',
                       backgroundColor: isSameDay
-                        ? 'black'
+                        ? '#f25d9c'
                         : monthColors[date.month()],
                     }}
                     data-date={date}
@@ -148,7 +150,7 @@ function CalendarGrid() {
         </div>
 
       <div className="flex items-center justify-center w-screen pt-12 pb-12" >
-        <div className={`text-center w-11/12 max-w-screen-md ${slideAesthetics} ${slidePositioning}`}>
+        <div className={`text-center w-11/12 max-w-screen-md ${slideAesthetics} ${slidePositioning} ${slideDark} ${slideTransition}`}>
           <div>
             Top pages on {selectedDate && selectedDate.format('L')}{' '}
           </div>
