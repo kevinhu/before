@@ -122,7 +122,7 @@ function CalendarGrid() {
   const slideTransition = "transition ease-in duration-200"
 
   return (
-    <div className="bg-gray-200 dark:bg-gray-700">
+    <div className="bg-gray-200 dark:bg-gray-700 min-h-full">
       <GlobalHotKeys keyMap={keyMap} handlers={handlers} style={{outline:"none"}} />
         <div
           className="flex p-2 rounded-lg shadow-xl bg-white dark:bg-gray-800"

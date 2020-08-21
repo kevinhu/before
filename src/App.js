@@ -10,6 +10,9 @@ import NotFound from './pages/NotFound';
 import { useDarkMode } from './components/DarkMode';
 import DarkModeToggle from 'react-dark-mode-toggle';
 
+// Global css
+import './App.css';
+
 function App() {
   const [theme, toggleTheme, componentMounted] = useDarkMode();
 
