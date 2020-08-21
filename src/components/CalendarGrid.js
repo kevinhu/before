@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import chroma from 'chroma-js';
-import { HotKeys } from 'react-hotkeys';
+import { GlobalHotKeys } from 'react-hotkeys';
 
 function CalendarGrid() {
   let enumerateDaysBetweenDates = function (startDate, endDate) {
@@ -81,6 +81,13 @@ function CalendarGrid() {
     setSelectedDate(currentDate);
   };
 
+  const nextWeek = () => {
+    let currentDate = selectedDateRef.current.clone();
+
+    currentDate.add(7, 'days');
+    setSelectedDate(currentDate);
+  };
+
   const yesterday = () => {
     let currentDate = selectedDateRef.current.clone();
 
@@ -88,19 +95,30 @@ function CalendarGrid() {
     setSelectedDate(currentDate);
   };
 
+  const prevWeek = () => {
+    let currentDate = selectedDateRef.current.clone();
+
+    currentDate.add(-7, 'days');
+    setSelectedDate(currentDate);
+  };
+
   const keyMap = {
-    TOMORROW: ['right', 'down'],
-    YESTERDAY: ['left', 'up'],
+    TOMORROW: ['down'],
+    YESTERDAY: ['up'],
+    NEXT_WEEK: ['right'],
+    LAST_WEEK: ['left']
   };
 
   const handlers = {
     TOMORROW: tomorrow,
     YESTERDAY: yesterday,
+    NEXT_WEEK: nextWeek,
+    LAST_WEEK: prevWeek,
   };
 
   return (
     <div className="bg-gray-200">
-      <HotKeys keyMap={keyMap} handlers={handlers}>
+      <GlobalHotKeys keyMap={keyMap} handlers={handlers} style={{outline:"none"}} />
         <div
           className="flex p-2 rounded-lg shadow-xl bg-white"
           style={{ width: 'max-content', margin: '0 auto' }}>
@@ -125,7 +143,6 @@ function CalendarGrid() {
             </div>
           ))}
         </div>
-      </HotKeys>
 
       <div className="text-center mt-12">
         Top pages on {selectedDate && selectedDate.format('L')}{' '}
