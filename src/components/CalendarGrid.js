@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import chroma from 'chroma-js'
+import chroma from 'chroma-js';
+import { HotKeys } from 'react-hotkeys';
 
 function CalendarGrid() {
   let enumerateDaysBetweenDates = function (startDate, endDate) {
@@ -54,43 +55,78 @@ function CalendarGrid() {
     lastWeek.push(lastWeek.slice(-1)[0].clone().add(1, 'days'));
   }
 
+  const [selectedDate, _setSelectedDate] = useState(datesByWeek[0][0]);
+
+  const selectedDateRef = React.useRef(selectedDate);
+  const setSelectedDate = (data) => {
+    selectedDateRef.current = data;
+    _setSelectedDate(data);
+  };
+
   const gridClick = (event) => {
     const date = moment(parseInt(event.target.dataset.date));
 
-    setSelectedDate(date);
+    setSelectedDate(date.clone());
   };
-
-  const [selectedDate, setSelectedDate] = useState(datesByWeek[0][0]);
 
   const gridSizing = 'w-4 h-4 rounded';
   const gridTransition = 'transition ease-in duration-200';
 
-  const monthColors = new Array(12).fill(["#00bcd4","#a6dcef"]).flat();
+  const monthColors = new Array(12).fill(['#00bcd4', '#a6dcef']).flat();
+
+  const tomorrow = () => {
+    let currentDate = selectedDateRef.current.clone();
+
+    currentDate.add(1, 'days');
+    setSelectedDate(currentDate);
+  };
+
+  const yesterday = () => {
+    let currentDate = selectedDateRef.current.clone();
+
+    currentDate.add(-1, 'days');
+    setSelectedDate(currentDate);
+  };
+
+  const keyMap = {
+    TOMORROW: ['right', 'down'],
+    YESTERDAY: ['left', 'up'],
+  };
+
+  const handlers = {
+    TOMORROW: tomorrow,
+    YESTERDAY: yesterday,
+  };
 
   return (
     <div className="bg-gray-200">
-      <div
-        className="flex p-2 rounded-lg shadow-inner bg-white"
-        style={{ width: 'max-content', margin: '0 auto' }}>
-        {datesByWeek.map((week) => (
-          <div className={`block`}>
-            {week.map((date) => {
-              const isSameDay = date.isSame(selectedDate, 'day');
+      <HotKeys keyMap={keyMap} handlers={handlers}>
+        <div
+          className="flex p-2 rounded-lg shadow-xl bg-white"
+          style={{ width: 'max-content', margin: '0 auto' }}>
+          {datesByWeek.map((week) => (
+            <div className={`block`}>
+              {week.map((date) => {
+                const isSameDay = date.isSame(selectedDate, 'day');
 
-              return (
-                <div
-                  className={`cursor-pointer ${gridSizing} ${gridTransition}`}
-                  style={{
-                    margin: '2px',
-                    backgroundColor: isSameDay ? 'black' : monthColors[date.month()],
-                  }}
-                  data-date={date}
-                  onClick={gridClick}></div>
-              );
-            })}
-          </div>
-        ))}
-      </div>
+                return (
+                  <div
+                    className={`cursor-pointer ${gridSizing} ${gridTransition}`}
+                    style={{
+                      margin: '2px',
+                      backgroundColor: isSameDay
+                        ? 'black'
+                        : monthColors[date.month()],
+                    }}
+                    data-date={date}
+                    onClick={gridClick}></div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      </HotKeys>
+
       <div className="text-center mt-12">
         Top pages on {selectedDate && selectedDate.format('L')}{' '}
       </div>
