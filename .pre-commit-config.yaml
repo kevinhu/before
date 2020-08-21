@@ -1,8 +1,0 @@
-repos:
--   repo: local
-    hooks:
-    - id: jupytext
-      name: jupytext
-      entry: jupytext --to md
-      files: .ipynb
-      language: python
