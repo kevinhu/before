@@ -10,7 +10,7 @@ function App() {
     <Router>
       <Switch>
         {/* Public Routes */}
-        <Route exact path="/">
+        <Route exact path="/before">
           {<Explore />}
         </Route>
 
