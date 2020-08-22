@@ -68,7 +68,7 @@ def fetch_comments_since(start_time, query, output_dir):
                 break
 
 # start_time = datetime.strptime("2000-01-01 00:00:00", '%Y-%m-%d %H:%M:%S')
-start_time = datetime.strptime("2019-11-21 00:00:00", '%Y-%m-%d %H:%M:%S')
+start_time = datetime.strptime("2020-01-22 00:00:00", '%Y-%m-%d %H:%M:%S')
 
 query = {
     "q": "github.com",
