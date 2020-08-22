@@ -4,6 +4,8 @@ import chroma from 'chroma-js';
 import { GlobalHotKeys } from 'react-hotkeys';
 import ReactTooltip from 'react-tooltip';
 
+import Styles from './CalendarGrid.module.css';
+
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 
 function CalendarGrid() {
@@ -170,7 +172,11 @@ function CalendarGrid() {
         handlers={handlers}
         style={{ outline: 'none' }}
       />
-      <ReactTooltip effect="solid" />
+      <ReactTooltip
+        effect="solid"
+        className={`shadow ${Styles.tooltip}`}
+        offset={{ top: -6 }}
+      />
 
       <div
         className="rounded-lg shadow-xl bg-white dark:bg-gray-800"
