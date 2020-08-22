@@ -22,6 +22,9 @@ function CalendarGrid() {
     return dates;
   };
 
+  const minYear = 2008;
+  const maxYear = moment().year();
+
   const daysInYearByWeek = (year) => {
     const DATE_FORMAT = 'YYYYMMDD';
 
@@ -63,7 +66,7 @@ function CalendarGrid() {
     return datesByWeek;
   };
 
-  const [selectedYear, setSelectedYear] = useState(2012);
+  const [selectedYear, setSelectedYear] = useState(maxYear);
 
   let datesByWeek = daysInYearByWeek(selectedYear);
 
@@ -81,7 +84,7 @@ function CalendarGrid() {
     setSelectedDate(date.clone());
   };
 
-  const gridSizing = 'w-3 h-3 rounded';
+  const gridSizing = 'w-4 h-4 rounded';
   const gridTransition = 'transition ease-in duration-200';
 
   const monthColors = new Array(12).fill(['bg-gray-200', 'bg-gray-400']).flat();
@@ -149,7 +152,7 @@ function CalendarGrid() {
   const changeYear = (increment) => {
     let targetYear = selectedYear + increment;
 
-    if (targetYear >= 2008 && targetYear <= 2020) {
+    if (targetYear >= minYear && targetYear <= maxYear) {
       setSelectedYear(selectedYear + increment);
     }
   };
@@ -185,18 +188,22 @@ function CalendarGrid() {
           className="pt-1 text-xl leading-10 dark:text-gray-200"
           style={{ width: 'max-content', margin: '0 auto' }}>
           <HiOutlineChevronLeft
-            className={`${yearToggleStyle}`}
+            className={`${selectedYear > minYear ? yearToggleStyle : 'inline text-transparent'}`}
             onClick={() => {
-              changeYear(-1);
+              if (selectedYear > minYear){
+                changeYear(-1);
+              }
             }}
           />
           <div className="inline align-middle mx-1 select-none">
             {selectedYear}
           </div>
           <HiOutlineChevronRight
-            className={`${yearToggleStyle}`}
+            className={`${selectedYear < maxYear ? yearToggleStyle : 'inline text-transparent'}`}
             onClick={() => {
-              changeYear(1);
+              if (selectedYear < maxYear){
+                changeYear(1);
+              }
             }}
           />
         </div>
