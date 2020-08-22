@@ -4,6 +4,8 @@ import chroma from 'chroma-js';
 import { GlobalHotKeys } from 'react-hotkeys';
 import ReactTooltip from 'react-tooltip';
 
+import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
+
 function CalendarGrid() {
   let enumerateDaysBetweenDates = function (startDate, endDate) {
     let dates = [];
@@ -18,43 +20,50 @@ function CalendarGrid() {
     return dates;
   };
 
-  const DATE_FORMAT = 'YYYYMMDD';
+  const daysInYearByWeek = (year) => {
+    const DATE_FORMAT = 'YYYYMMDD';
 
-  let startDate = moment('20130101', DATE_FORMAT);
-  let endDate = moment('20140101', DATE_FORMAT);
+    let startDate = moment((year - 1).toString() + '1231', DATE_FORMAT);
+    let endDate = moment((year + 1).toString() + '0101', DATE_FORMAT);
 
-  let dates = enumerateDaysBetweenDates(startDate, endDate);
+    let dates = enumerateDaysBetweenDates(startDate, endDate);
 
-  let datesByWeek = [];
+    let datesByWeek = [];
 
-  let week_ = 1;
-  let week_group = [];
+    let week_ = 1;
+    let week_group = [];
 
-  for (const date of dates) {
-    if (week_ !== date.week()) {
-      datesByWeek.push(week_group);
-      week_group = [];
-      week_ = date.week();
+    for (const date of dates) {
+      if (week_ !== date.week()) {
+        datesByWeek.push(week_group);
+        week_group = [];
+        week_ = date.week();
+      }
+      week_group.push(date);
     }
 
-    week_group.push(date);
-  }
+    if (week_group.length > 0) {
+      datesByWeek.push(week_group);
+    }
 
-  if (week_group.length > 0) {
-    datesByWeek.push(week_group);
-  }
+    const firstWeek = datesByWeek[0];
 
-  const firstWeek = datesByWeek[0];
+    while (firstWeek.length < 7) {
+      firstWeek.unshift(firstWeek[0].clone().add(-1, 'days'));
+    }
 
-  while (firstWeek.length < 7) {
-    firstWeek.unshift(firstWeek[0].clone().add(-1, 'days'));
-  }
+    const lastWeek = datesByWeek.slice(-1)[0];
 
-  const lastWeek = datesByWeek.slice(-1)[0];
+    while (lastWeek.length < 7) {
+      lastWeek.push(lastWeek.slice(-1)[0].clone().add(1, 'days'));
+    }
 
-  while (lastWeek.length < 7) {
-    lastWeek.push(lastWeek.slice(-1)[0].clone().add(1, 'days'));
-  }
+    return datesByWeek;
+  };
+
+  const [selectedYear, setSelectedYear] = useState(2012);
+
+  let datesByWeek = daysInYearByWeek(selectedYear);
 
   const [selectedDate, _setSelectedDate] = useState(datesByWeek[0][0]);
 
@@ -73,8 +82,12 @@ function CalendarGrid() {
   const gridSizing = 'w-4 h-4 rounded';
   const gridTransition = 'transition ease-in duration-200';
 
-  const monthColors = new Array(12).fill(['bg-teal-300', 'bg-indigo-300']).flat();
-  const darkMonthColors = new Array(12).fill(['bg-teal-600', 'bg-indigo-600']).flat();
+  const monthColors = new Array(12)
+    .fill(['bg-teal-300', 'bg-indigo-300'])
+    .flat();
+  const darkMonthColors = new Array(12)
+    .fill(['bg-teal-600', 'bg-indigo-600'])
+    .flat();
 
   const tomorrow = () => {
     let currentDate = selectedDateRef.current.clone();
@@ -124,7 +137,33 @@ function CalendarGrid() {
   const slideDark = 'dark:bg-gray-800 dark:text-white';
   const slideTransition = 'transition ease-in duration-200';
 
-  const keyAesthetics = 'rounded py-1 px-2 text-xs shadow-sm bg-gray-400 dark:bg-gray-800'
+  const keyAesthetics =
+    'rounded py-1 px-2 text-xs shadow-sm bg-gray-400 dark:bg-gray-800';
+
+  const yearToggleAesthetics =
+    'rounded hover:bg-gray-300 dark:hover:bg-gray-700';
+  const yearTogglePosition = 'inline cursor-pointer align-middle';
+  const yearToggleTransition = 'transition ease-in duration-200';
+  const yearToggleStyle = `${yearToggleAesthetics} ${yearTogglePosition} ${yearToggleTransition}`;
+
+  const changeYear = (increment) => {
+    let targetYear = selectedYear + increment;
+
+    if (targetYear >= 2008 && targetYear <= 2020) {
+      setSelectedYear(selectedYear + increment);
+    }
+  };
+
+  let earliestDate = datesByWeek[0][0];
+  let latestDate = datesByWeek.slice(-1)[0].slice(-1)[0];
+
+  if (earliestDate.isAfter(selectedDate)) {
+    setSelectedDate(earliestDate);
+  }
+
+  if (latestDate.isBefore(selectedDate)) {
+    setSelectedDate(latestDate);
+  }
 
   return (
     <div className="bg-gray-200 dark:bg-gray-700 min-h-full">
@@ -133,31 +172,53 @@ function CalendarGrid() {
         handlers={handlers}
         style={{ outline: 'none' }}
       />
-      <ReactTooltip effect="solid"/>
+      <ReactTooltip effect="solid" />
 
       <div
-        className="flex p-2 rounded-lg shadow-xl bg-white dark:bg-gray-800"
+        className="rounded-lg shadow-xl bg-white dark:bg-gray-800"
         style={{ width: 'max-content', margin: '0 auto' }}>
-        {datesByWeek.map((week) => (
-          <div className={`block`}>
-            {week.map((date) => {
-              const isSameDay = date.isSame(selectedDate, 'day');
+        <div
+          className="pt-1 text-xl leading-10 dark:text-gray-200"
+          style={{ width: 'max-content', margin: '0 auto' }}>
+          <HiOutlineChevronLeft
+            className={`${yearToggleStyle}`}
+            onClick={() => {
+              changeYear(-1);
+            }}
+          />
+          <div className="inline align-middle mx-1 select-none">{selectedYear}</div>
+          <HiOutlineChevronRight
+            className={`${yearToggleStyle}`}
+            onClick={() => {
+              changeYear(1);
+            }}
+          />
+        </div>
+        <div
+          className="flex p-1"
+          style={{ width: 'max-content', margin: '0 auto' }}>
+          {datesByWeek.map((week) => (
+            <div className={`block`}>
+              {week.map((date) => {
+                const isSameDay = date.isSame(selectedDate, 'day');
 
-              return (
-                <div
-                  className={`cursor-pointer ${gridSizing} ${gridTransition} ${monthColors[date.month()]} dark:${darkMonthColors[date.month()]}`}
-                  style={{
-                    margin: '2px',
-                    backgroundColor: isSameDay
-                      && '#f25d9c'
-                  }}
-                  data-date={date}
-                  data-tip={date.format("MMMM Do, YYYY")}
-                  onClick={gridClick}></div>
-              );
-            })}
-          </div>
-        ))}
+                return (
+                  <div
+                    className={`cursor-pointer ${gridSizing} ${gridTransition} ${
+                      monthColors[date.month()]
+                    } dark:${darkMonthColors[date.month()]}`}
+                    style={{
+                      margin: '2px',
+                      backgroundColor: isSameDay && '#f25d9c',
+                    }}
+                    data-date={date}
+                    data-tip={date.format('MMMM Do, YYYY')}
+                    onClick={gridClick}></div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="flex items-center justify-center w-screen pt-12 pb-12">
@@ -168,7 +229,10 @@ function CalendarGrid() {
       </div>
 
       <div className="text-center text-gray-800 dark:text-gray-300">
-      Pro tip: use <span className={`${keyAesthetics}`}>W</span> and <span className={`${keyAesthetics}`}>S</span> to shift by day, and <span className={`${keyAesthetics}`}>A</span> and <span className={`${keyAesthetics}`}>D</span> to shift by week.
+        Pro tip: use <span className={`${keyAesthetics}`}>W</span> and{' '}
+        <span className={`${keyAesthetics}`}>S</span> to shift by day, and{' '}
+        <span className={`${keyAesthetics}`}>A</span> and{' '}
+        <span className={`${keyAesthetics}`}>D</span> to shift by week.
       </div>
     </div>
   );
