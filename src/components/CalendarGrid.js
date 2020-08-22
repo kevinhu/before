@@ -73,7 +73,8 @@ function CalendarGrid() {
   const gridSizing = 'w-4 h-4 rounded';
   const gridTransition = 'transition ease-in duration-200';
 
-  const monthColors = new Array(12).fill(['#00bcd4', '#a6dcef']).flat();
+  const monthColors = new Array(12).fill(['bg-teal-300', 'bg-indigo-300']).flat();
+  const darkMonthColors = new Array(12).fill(['bg-teal-600', 'bg-indigo-600']).flat();
 
   const tomorrow = () => {
     let currentDate = selectedDateRef.current.clone();
@@ -104,10 +105,10 @@ function CalendarGrid() {
   };
 
   const keyMap = {
-    TOMORROW: ['down'],
-    YESTERDAY: ['up'],
-    NEXT_WEEK: ['right'],
-    LAST_WEEK: ['left'],
+    TOMORROW: ['s'],
+    YESTERDAY: ['w'],
+    NEXT_WEEK: ['d'],
+    LAST_WEEK: ['a'],
   };
 
   const handlers = {
@@ -122,6 +123,8 @@ function CalendarGrid() {
   const slideAesthetics = 'shadow-2xl bg-white rounded-lg py-48';
   const slideDark = 'dark:bg-gray-800 dark:text-white';
   const slideTransition = 'transition ease-in duration-200';
+
+  const keyAesthetics = 'rounded py-1 px-2 text-xs shadow-sm bg-gray-400 dark:bg-gray-800'
 
   return (
     <div className="bg-gray-200 dark:bg-gray-700 min-h-full">
@@ -142,12 +145,11 @@ function CalendarGrid() {
 
               return (
                 <div
-                  className={`cursor-pointer ${gridSizing} ${gridTransition}`}
+                  className={`cursor-pointer ${gridSizing} ${gridTransition} ${monthColors[date.month()]} dark:${darkMonthColors[date.month()]}`}
                   style={{
                     margin: '2px',
                     backgroundColor: isSameDay
-                      ? '#f25d9c'
-                      : monthColors[date.month()],
+                      && '#f25d9c'
                   }}
                   data-date={date}
                   data-tip={date.format("MMMM Do, YYYY")}
@@ -163,6 +165,10 @@ function CalendarGrid() {
           className={`text-center w-11/12 max-w-screen-md ${slideAesthetics} ${slidePositioning} ${slideDark} ${slideTransition}`}>
           <div>Top pages on {selectedDate && selectedDate.format('L')} </div>
         </div>
+      </div>
+
+      <div className="text-center text-gray-800 dark:text-gray-300">
+      Pro tip: use <span className={`${keyAesthetics}`}>W</span> and <span className={`${keyAesthetics}`}>S</span> to shift by day, and <span className={`${keyAesthetics}`}>A</span> and <span className={`${keyAesthetics}`}>D</span> to shift by week.
       </div>
     </div>
   );
