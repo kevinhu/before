@@ -79,14 +79,12 @@ function CalendarGrid() {
     setSelectedDate(date.clone());
   };
 
-  const gridSizing = 'w-4 h-4 rounded';
+  const gridSizing = 'w-3 h-3 rounded';
   const gridTransition = 'transition ease-in duration-200';
 
-  const monthColors = new Array(12)
-    .fill(['bg-teal-300', 'bg-indigo-300'])
-    .flat();
+  const monthColors = new Array(12).fill(['bg-gray-200', 'bg-gray-400']).flat();
   const darkMonthColors = new Array(12)
-    .fill(['bg-teal-600', 'bg-indigo-600'])
+    .fill(['bg-gray-600', 'bg-gray-700'])
     .flat();
 
   const tomorrow = () => {
@@ -141,7 +139,7 @@ function CalendarGrid() {
     'rounded py-1 px-2 text-xs shadow-sm bg-gray-400 dark:bg-gray-800';
 
   const yearToggleAesthetics =
-    'rounded hover:bg-gray-300 dark:hover:bg-gray-700';
+    'rounded hover:bg-gray-300 dark-hover:bg-gray-600';
   const yearTogglePosition = 'inline cursor-pointer align-middle';
   const yearToggleTransition = 'transition ease-in duration-200';
   const yearToggleStyle = `${yearToggleAesthetics} ${yearTogglePosition} ${yearToggleTransition}`;
@@ -186,7 +184,9 @@ function CalendarGrid() {
               changeYear(-1);
             }}
           />
-          <div className="inline align-middle mx-1 select-none">{selectedYear}</div>
+          <div className="inline align-middle mx-1 select-none">
+            {selectedYear}
+          </div>
           <HiOutlineChevronRight
             className={`${yearToggleStyle}`}
             onClick={() => {
@@ -197,23 +197,38 @@ function CalendarGrid() {
         <div
           className="flex p-1"
           style={{ width: 'max-content', margin: '0 auto' }}>
-          {datesByWeek.map((week) => (
+          {datesByWeek.map((week, weekIndex) => (
             <div className={`block`}>
-              {week.map((date) => {
+              {week.map((date, dateIndex) => {
                 const isSameDay = date.isSame(selectedDate, 'day');
 
                 return (
                   <div
-                    className={`cursor-pointer ${gridSizing} ${gridTransition} ${
-                      monthColors[date.month()]
-                    } dark:${darkMonthColors[date.month()]}`}
+                    className={`outer_grid`}
                     style={{
-                      margin: '2px',
-                      backgroundColor: isSameDay && '#f25d9c',
-                    }}
-                    data-date={date}
-                    data-tip={date.format('MMMM Do, YYYY')}
-                    onClick={gridClick}></div>
+                      padding: '2px',
+                      border: 'solid 1px transparent',
+                      borderLeft:
+                        date.date() <= 7 &&
+                        (date.week() != 1 || date.year() > selectedYear)
+                          ? 'solid 1px rgba(160,160,160,1)'
+                          : 'none',
+                      borderTop:
+                        date.date() == 1 &&
+                        date.day() != 0 &&
+                        !(weekIndex == 0 && dateIndex == 0)
+                          ? 'solid 1px rgba(160,160,160,1)'
+                          : 'none',
+                    }}>
+                    <div
+                      className={`cursor-pointer bg-gray-400 dark:bg-gray-600 ${gridSizing} ${gridTransition}`}
+                      style={{
+                        backgroundColor: isSameDay && '#f25d9c',
+                      }}
+                      data-date={date}
+                      data-tip={date.format('MMMM Do, YYYY')}
+                      onClick={gridClick}></div>
+                  </div>
                 );
               })}
             </div>
