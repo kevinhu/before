@@ -202,24 +202,13 @@ function CalendarGrid() {
               {week.map((date, dateIndex) => {
                 const isSameDay = date.isSame(selectedDate, 'day');
 
+                const weekOfMonth =
+                  date.week() - moment(date).startOf('month').week() + 1;
+
                 return (
                   <div
-                    className={`outer_grid`}
-                    style={{
-                      padding: '2px',
-                      border: 'solid 1px transparent',
-                      borderLeft:
-                        date.date() <= 7 &&
-                        (date.week() != 1 || date.year() > selectedYear)
-                          ? 'solid 1px rgba(160,160,160,1)'
-                          : 'none',
-                      borderTop:
-                        date.date() == 1 &&
-                        date.day() != 0 &&
-                        !(weekIndex == 0 && dateIndex == 0)
-                          ? 'solid 1px rgba(160,160,160,1)'
-                          : 'none',
-                    }}>
+                    className={`outer_grid relative`}
+                    style={{ padding: '2px' }}>
                     <div
                       className={`cursor-pointer bg-gray-400 dark:bg-gray-600 ${gridSizing} ${gridTransition}`}
                       style={{
@@ -228,6 +217,32 @@ function CalendarGrid() {
                       data-date={date}
                       data-tip={date.format('MMMM Do, YYYY')}
                       onClick={gridClick}></div>
+                    {date.date() <= 7 &&
+                    (date.week() != 1 || date.year() > selectedYear) ? (
+                      <div
+                        className={`bg-blue-400 dark:bg-orange-400 h-full inset-0`}
+                        style={{
+                          top: weekOfMonth == 1 ? '-1px' : '1px',
+                          position: 'absolute',
+                          width: '2px',
+                          marginLeft: '-1px',
+                        }}></div>
+                    ) : (
+                      ''
+                    )}
+                    {date.date() == 1 &&
+                    date.day() != 0 &&
+                    !(weekIndex == 0 && dateIndex == 0) ? (
+                      <div
+                        className={`bg-blue-400 dark:bg-orange-400 w-full inset-0`}
+                        style={{
+                          position: 'absolute',
+                          height: '2px',
+                          marginTop: '-1px',
+                        }}></div>
+                    ) : (
+                      ''
+                    )}
                   </div>
                 );
               })}
