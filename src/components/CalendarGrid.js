@@ -13,6 +13,7 @@ import { FaHackerNewsSquare, FaRedditSquare } from 'react-icons/fa';
 import hackernewsDaily from '../assets/hackernews_github.json';
 
 import NoRepos from '../assets/cat-in-space.svg';
+import HackernewsIcon from '../assets/hackernews_icon.svg';
 
 function CalendarGrid() {
   const minYear = 2008;
@@ -25,10 +26,14 @@ function CalendarGrid() {
   let earliestDate = datesByWeek[0][0];
   let latestDate = datesByWeek.slice(-1)[0].slice(-1)[0];
 
-  let absoluteEarliestDate = moment({ year: minYear, month: 0, date: 1 }).startOf('week').add(-1, 'days')
-  let absoluteLatestDate = moment({ year: maxYear, month: 11, date: 31 }).endOf('week')
+  let absoluteEarliestDate = moment({ year: minYear, month: 0, date: 1 })
+    .startOf('week')
+    .add(-1, 'days');
+  let absoluteLatestDate = moment({ year: maxYear, month: 11, date: 31 }).endOf(
+    'week',
+  );
 
-  console.log(absoluteLatestDate)
+  console.log(absoluteLatestDate);
 
   const [selectedDate, _setSelectedDate] = useState(datesByWeek[0][0]);
 
@@ -52,7 +57,10 @@ function CalendarGrid() {
 
     targetDate.add(increment, 'days');
 
-    if (targetDate.isAfter(absoluteEarliestDate) && targetDate.isBefore(absoluteLatestDate)) {
+    if (
+      targetDate.isAfter(absoluteEarliestDate) &&
+      targetDate.isBefore(absoluteLatestDate)
+    ) {
       setSelectedDate(targetDate);
     }
   };
@@ -90,7 +98,7 @@ function CalendarGrid() {
   const slideAesthetics = 'shadow-2xl bg-white rounded-lg px-8 py-8';
   const slideDark = 'dark:bg-gray-800 dark:text-white';
   const slideTransition = 'transition ease-in duration-200';
-  const slideSizing = 'sm:w-3/4 md:w-3/4 lg:w-1/2';
+  const slideSizing = 'sm:w-3/4 md:w-3/4 lg:w-3/4';
 
   const keyAesthetics =
     'rounded py-1 px-2 text-xs shadow-sm bg-gray-400 dark:bg-gray-800';
@@ -155,6 +163,13 @@ function CalendarGrid() {
         className={`shadow ${Styles.tooltip}`}
         offset={{ top: -6 }}
       />
+
+      <div className="text-center text-gray-800 dark:text-gray-300 pb-4">
+        Pro tip: use&nbsp;<span className={`${keyAesthetics}`}>W</span>, &nbsp;
+        <span className={`${keyAesthetics}`}>A</span>, &nbsp;
+        <span className={`${keyAesthetics}`}>S</span>, and{' '}
+        <span className={`${keyAesthetics}`}>D</span> to navigate the grid.
+      </div>
 
       <div
         className="rounded-lg shadow-xl bg-white dark:bg-gray-800"
@@ -277,18 +292,27 @@ function CalendarGrid() {
                 return (
                   <div className="flex py-2">
                     <div className="w-1/12 select-none">{repo.daily_rank}</div>
-                    <a
-                      className={`w-3/4 ${linkHover}`}
-                      href={repo.url}
-                      target="_blank">
-                      {repo.title}
-                    </a>
-                    <a
-                      className={`w-1/4 ${linkHover}`}
-                      href={`https://news.ycombinator.com/item?id=${repo.objectID}`}
-                      target="_blank">
-                      <FaHackerNewsSquare />
-                    </a>
+                    <div className="w-5/6 mr-3">
+                      <a
+                        className={`${linkHover}`}
+                        href={repo.url}
+                        target="_blank">
+                        {repo.title}
+                      </a>
+                    </div>
+                    <div className="w-1/12 mx-auto text-xl">
+                      <a
+                        className={`w-1/4 ${linkHover}`}
+                        href={`https://news.ycombinator.com/item?id=${repo.objectID}`}
+                        target="_blank">
+                        <div
+                          className="rounded border-solid border-2 border-gray-500 h-auto flex"
+                          style={{ width: 'fit-content' }}>
+                          <FaHackerNewsSquare />
+                          <div className="text-sm px-1">{repo.points}</div>
+                        </div>
+                      </a>
+                    </div>
                   </div>
                 );
               })
@@ -303,13 +327,6 @@ function CalendarGrid() {
             )}
           </div>
         </div>
-      </div>
-
-      <div className="text-center text-gray-800 dark:text-gray-300 py-4">
-        Pro tip: use&nbsp;<span className={`${keyAesthetics}`}>W</span>, &nbsp;
-        <span className={`${keyAesthetics}`}>A</span>, &nbsp;
-        <span className={`${keyAesthetics}`}>S</span>, and{' '}
-        <span className={`${keyAesthetics}`}>D</span> to navigate the grid.
       </div>
     </div>
   );
