@@ -29,7 +29,7 @@ hackernews.reset_index(inplace=True, drop=True)
 
 # drop some columns
 hackernews = hackernews[
-    ["title", "url", "author", "points", "date", "day", "daily_rank"]
+    ["title", "url", "author", "points", "date", "day", "objectID", "daily_rank"]
 ]
 
 hackernews.to_feather(
@@ -39,8 +39,8 @@ hackernews.to_feather(
 )
 
 hackernews["date"] = hackernews["date"].astype(str)
-hackernews_dict = hackernews.to_dict("records")
-hackernews_dict = {x["day"]: x for x in hackernews_dict}
+hackernews_dict = dict(tuple(hackernews.groupby("day")))
+hackernews_dict = {x: y.to_dict("records") for x, y in hackernews_dict.items()}
 
-with open(config.DATA_DIR / "processed/hackernews_github.json", "w") as f:
-	f.write(ujson.dumps(hackernews_dict))
+with open("../src/assets/hackernews_github.json", "w") as f:
+    f.write(ujson.dumps(hackernews_dict))
