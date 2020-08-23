@@ -43,6 +43,7 @@ function CalendarGrid() {
     let currentDate = selectedDateRef.current.clone();
 
     currentDate.add(1, 'days');
+
     setSelectedDate(currentDate);
   };
 
@@ -57,6 +58,7 @@ function CalendarGrid() {
     let currentDate = selectedDateRef.current.clone();
 
     currentDate.add(-1, 'days');
+
     setSelectedDate(currentDate);
   };
 
@@ -64,6 +66,7 @@ function CalendarGrid() {
     let currentDate = selectedDateRef.current.clone();
 
     currentDate.add(-7, 'days');
+
     setSelectedDate(currentDate);
   };
 
@@ -113,11 +116,11 @@ function CalendarGrid() {
   let latestDate = datesByWeek.slice(-1)[0].slice(-1)[0];
 
   if (earliestDate.isAfter(selectedDate)) {
-    setSelectedDate(earliestDate);
+    changeYear(-1)
   }
 
   if (latestDate.isBefore(selectedDate)) {
-    setSelectedDate(latestDate);
+    changeYear(1)
   }
 
   const dateKey = selectedDate.format('YYYY-MM-DD').toString();
@@ -267,7 +270,7 @@ function CalendarGrid() {
               selectedHackernews.map((repo, index) => {
                 return (
                   <div className="flex py-2">
-                    <div className="w-1/12">{repo.daily_rank}</div>
+                    <div className="w-1/12 select-none">{repo.daily_rank}</div>
                     <a
                       className={`w-3/4 ${linkHover}`}
                       href={repo.url}
@@ -287,9 +290,9 @@ function CalendarGrid() {
               <div className="text-center w-full">
                 <img
                   alt="No repos found."
-                  className="py-2 w-1/2 m-auto"
+                  className="py-2 w-1/2 m-auto select-none"
                   src={NoRepos}></img>
-                <div>No repos found.</div>
+                <div className="select-none">No repos found.</div>
               </div>
             )}
           </div>
@@ -297,10 +300,10 @@ function CalendarGrid() {
       </div>
 
       <div className="text-center text-gray-800 dark:text-gray-300 py-4">
-        Pro tip: use <span className={`${keyAesthetics}`}>W</span> and{' '}
-        <span className={`${keyAesthetics}`}>S</span> to shift by day, and{' '}
-        <span className={`${keyAesthetics}`}>A</span> and{' '}
-        <span className={`${keyAesthetics}`}>D</span> to shift by week.
+        Pro tip: use&nbsp;<span className={`${keyAesthetics}`}>W</span>, &nbsp;
+        <span className={`${keyAesthetics}`}>A</span>, &nbsp;
+        <span className={`${keyAesthetics}`}>S</span>, and{' '}
+        <span className={`${keyAesthetics}`}>D</span> to navigate the grid.
       </div>
     </div>
   );
