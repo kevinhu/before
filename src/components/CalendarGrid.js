@@ -8,7 +8,7 @@ import Styles from './CalendarGrid.module.css';
 import { daysInYearByWeek } from '../utils';
 
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
-import {FaHackerNewsSquare, FaRedditSquare} from 'react-icons/fa'
+import { FaHackerNewsSquare, FaRedditSquare } from 'react-icons/fa';
 
 import hackernewsDaily from '../assets/hackernews_github.json';
 
@@ -82,7 +82,7 @@ function CalendarGrid() {
   const slideAesthetics = 'shadow-2xl bg-white rounded-lg px-8 py-8';
   const slideDark = 'dark:bg-gray-800 dark:text-white';
   const slideTransition = 'transition ease-in duration-200';
-  const slideSizing = 'sm:w-3/4 md:w-3/4 lg:w-1/2'
+  const slideSizing = 'sm:w-3/4 md:w-3/4 lg:w-1/2';
 
   const keyAesthetics =
     'rounded py-1 px-2 text-xs shadow-sm bg-gray-400 dark:bg-gray-800';
@@ -182,7 +182,10 @@ function CalendarGrid() {
                       className={`cursor-pointer bg-gray-400 dark:bg-gray-600 ${gridSizing} ${gridTransition}`}
                       style={{
                         backgroundColor: isSameDay && '#f25d9c',
-                        opacity: date.format('YYYY-MM-DD') in hackernewsDaily ? 1 : 0.5
+                        opacity:
+                          date.format('YYYY-MM-DD') in hackernewsDaily
+                            ? 1
+                            : 0.5,
                       }}
                       data-date={date}
                       data-tip={date.format('MMMM Do, YYYY')}
@@ -224,19 +227,28 @@ function CalendarGrid() {
       <div className="flex items-center justify-center w-screen pt-12 pb-12">
         <div
           className={`max-w-screen-md ${slideAesthetics} ${slideDark} ${slideTransition} ${slideSizing}`}>
-          <div className="text-lg pb-4">Top repos on {selectedDate.format('MMMM Do, YYYY')}</div>
+          <div className="text-lg pb-4">
+            Top repos on {selectedDate.format('MMMM Do, YYYY')}
+          </div>
           <div>
-            {selectedHackernews ? selectedHackernews.map(
-              (repo, index) => {
-                return (
-                  <div className="flex">
-                    <div className="w-1/12">{repo.daily_rank}</div>
-                    <a className="w-3/4" href={repo.url}>{repo.title}</a>
-                    <a className="w-1/4" href={`https://news.ycombinator.com/item?id=${repo.objectID}`}><FaHackerNewsSquare/></a>
-                  </div>
-                );
-              },
-            ) : "nothing"}
+            {selectedHackernews
+              ? selectedHackernews.map((repo, index) => {
+                  return (
+                    <div className="flex">
+                      <div className="w-1/12">{repo.daily_rank}</div>
+                      <a className="w-3/4" href={repo.url} target="_blank">
+                        {repo.title}
+                      </a>
+                      <a
+                        className="w-1/4"
+                        href={`https://news.ycombinator.com/item?id=${repo.objectID}`}
+                        target="_blank">
+                        <FaHackerNewsSquare />
+                      </a>
+                    </div>
+                  );
+                })
+              : 'nothing'}
           </div>
         </div>
       </div>
