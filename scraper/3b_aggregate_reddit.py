@@ -77,6 +77,8 @@ reddit = reddit[
     ]
 ]
 
+reddit = reddit.rename({"github_url":"url","score":"points"})
+
 reddit.to_feather(
     config.DATA_DIR / "processed/reddit_github.feather",
     compression=config.FEATHER_COMPRESSION,
