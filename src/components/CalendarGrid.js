@@ -45,6 +45,7 @@ function CalendarGrid() {
     currentDate.add(1, 'days');
 
     setSelectedDate(currentDate);
+
   };
 
   const nextWeek = () => {
@@ -52,6 +53,7 @@ function CalendarGrid() {
 
     currentDate.add(7, 'days');
     setSelectedDate(currentDate);
+
   };
 
   const yesterday = () => {
@@ -60,6 +62,7 @@ function CalendarGrid() {
     currentDate.add(-1, 'days');
 
     setSelectedDate(currentDate);
+
   };
 
   const prevWeek = () => {
@@ -68,6 +71,7 @@ function CalendarGrid() {
     currentDate.add(-7, 'days');
 
     setSelectedDate(currentDate);
+
   };
 
   const keyMap = {
@@ -104,6 +108,20 @@ function CalendarGrid() {
   const dayToggleTransition = 'transition ease-in duration-200';
   const dayToggleStyle = `${dayToggleAesthetics} ${dayTogglePosition} ${dayToggleTransition}`;
 
+  const lastYear = () => {
+    if (selectedYear > minYear) {
+      setSelectedDate(selectedDate.clone().add(-1, 'years'))
+      changeYear(-1);
+    }
+  };
+
+  const nextYear = () => {
+    if (selectedYear < maxYear) {
+      setSelectedDate(selectedDate.clone().add(1, 'years'))
+      changeYear(1);
+    }
+  };
+
   const changeYear = (increment) => {
     let targetYear = selectedYear + increment;
 
@@ -116,11 +134,11 @@ function CalendarGrid() {
   let latestDate = datesByWeek.slice(-1)[0].slice(-1)[0];
 
   if (earliestDate.isAfter(selectedDate)) {
-    changeYear(-1)
+    changeYear(-1);
   }
 
   if (latestDate.isBefore(selectedDate)) {
-    changeYear(1)
+    changeYear(1);
   }
 
   const dateKey = selectedDate.format('YYYY-MM-DD').toString();
@@ -154,11 +172,7 @@ function CalendarGrid() {
                 ? yearToggleStyle
                 : 'inline text-transparent'
             }`}
-            onClick={() => {
-              if (selectedYear > minYear) {
-                changeYear(-1);
-              }
-            }}
+            onClick={lastYear}
           />
           <div className="inline align-middle mx-1 select-none">
             {selectedYear}
@@ -169,11 +183,7 @@ function CalendarGrid() {
                 ? yearToggleStyle
                 : 'inline text-transparent'
             }`}
-            onClick={() => {
-              if (selectedYear < maxYear) {
-                changeYear(1);
-              }
-            }}
+            onClick={nextYear}
           />
         </div>
         <div
