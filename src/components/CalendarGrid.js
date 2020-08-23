@@ -15,16 +15,21 @@ import hackernewsDaily from '../assets/hackernews_github.json';
 import NoRepos from '../assets/cat-in-space.svg';
 
 function CalendarGrid() {
+
+  // year bounds
   const minYear = 2008;
   const maxYear = moment().year();
 
   const [selectedYear, setSelectedYear] = useState(maxYear);
 
+  // dates for grid
   let datesByWeek = daysInYearByWeek(selectedYear);
 
+  // grid bounds
   let earliestDate = datesByWeek[0][0];
   let latestDate = datesByWeek.slice(-1)[0].slice(-1)[0];
 
+  // absolute grid bounds
   let absoluteEarliestDate = moment({ year: minYear, month: 0, date: 1 })
     .startOf('week')
     .add(-1, 'days');
@@ -32,25 +37,24 @@ function CalendarGrid() {
     'week',
   );
 
-  console.log(absoluteLatestDate);
-
+  // current date to display
   const [selectedDate, _setSelectedDate] = useState(datesByWeek[0][0]);
 
+  // use ref to for handlers
   const selectedDateRef = React.useRef(selectedDate);
   const setSelectedDate = (data) => {
     selectedDateRef.current = data;
     _setSelectedDate(data);
   };
 
+  // change date on cell click
   const gridClick = (event) => {
     const date = moment(parseInt(event.target.dataset.date));
 
     setSelectedDate(date.clone());
   };
 
-  const gridSizing = 'w-4 h-4 rounded';
-  const gridTransition = 'transition ease-in duration-200';
-
+  // general date incrementer
   const incrementDay = (increment) => {
     let targetDate = selectedDateRef.current.clone();
 
@@ -64,6 +68,7 @@ function CalendarGrid() {
     }
   };
 
+  // date increments for keys
   const tomorrow = () => {
     incrementDay(1);
   };
@@ -94,25 +99,14 @@ function CalendarGrid() {
     LAST_WEEK: prevWeek,
   };
 
-  const slideAesthetics = 'shadow-2xl bg-white rounded-lg px-8 py-6';
-  const slideDark = 'dark:bg-gray-800 dark:text-white';
-  const slideTransition = 'transition ease-in duration-200';
-  const slideSizing = 'sm:w-3/4 md:w-3/4 lg:w-3/4';
+  // year incrementers
+  const changeYear = (increment) => {
+    let targetYear = selectedYear + increment;
 
-  const keyAesthetics =
-    'rounded py-1 px-2 text-xs shadow-sm bg-gray-400 dark:bg-gray-800';
-
-  const yearToggleAesthetics =
-    'text-lg rounded hover:bg-gray-300 dark-hover:bg-gray-600 p-1';
-  const yearTogglePosition = 'inline cursor-pointer align-middle';
-  const yearToggleTransition = 'transition ease-in duration-200';
-  const yearToggleStyle = `${yearToggleAesthetics} ${yearTogglePosition} ${yearToggleTransition}`;
-
-  const dayToggleAesthetics =
-    'rounded hover:bg-gray-300 dark-hover:bg-gray-600 p-2';
-  const dayTogglePosition = 'cursor-pointer align-middle';
-  const dayToggleTransition = 'transition ease-in duration-200';
-  const dayToggleStyle = `${dayToggleAesthetics} ${dayTogglePosition} ${dayToggleTransition}`;
+    if (targetYear >= minYear && targetYear <= maxYear) {
+      setSelectedYear(selectedYear + increment);
+    }
+  };
 
   const lastYear = () => {
     if (selectedYear > minYear) {
@@ -128,14 +122,7 @@ function CalendarGrid() {
     }
   };
 
-  const changeYear = (increment) => {
-    let targetYear = selectedYear + increment;
-
-    if (targetYear >= minYear && targetYear <= maxYear) {
-      setSelectedYear(selectedYear + increment);
-    }
-  };
-
+  // change year to match date
   if (earliestDate.isAfter(selectedDate)) {
     changeYear(-1);
   }
@@ -144,14 +131,43 @@ function CalendarGrid() {
     changeYear(1);
   }
 
-  const dateKey = selectedDate.format('YYYY-MM-DD').toString();
+  // grid styles
+  const gridSizing = 'w-4 h-4 rounded';
+  const gridTransition = 'transition ease-in duration-200';
 
-  const selectedHackernews = hackernewsDaily[selectedDate.format('YYYY-MM-DD')];
+  // slide styles
+  const slideAesthetics = 'shadow-2xl bg-white rounded-lg px-8 py-6';
+  const slideDark = 'dark:bg-gray-800 dark:text-white';
+  const slideTransition = 'transition ease-in duration-150';
+  const slideSizing = 'sm:w-3/4 md:w-3/4 lg:w-3/4';
 
+  // key styles
+  const keyAesthetics =
+    'rounded py-1 px-2 text-xs shadow-sm bg-gray-400 dark:bg-gray-800';
+
+  // year toggler styles
+  const yearToggleAesthetics =
+    'text-lg rounded hover:bg-gray-300 dark-hover:bg-gray-600 p-1';
+  const yearTogglePosition = 'inline cursor-pointer align-middle';
+  const yearToggleTransition = 'transition ease-in duration-200';
+  const yearToggleStyle = `${yearToggleAesthetics} ${yearTogglePosition} ${yearToggleTransition}`;
+
+  // day toggler styles
+  const dayToggleAesthetics =
+    'rounded hover:bg-gray-300 dark-hover:bg-gray-600 p-2';
+  const dayTogglePosition = 'cursor-pointer align-middle';
+  const dayToggleTransition = 'transition ease-in duration-200';
+  const dayToggleStyle = `${dayToggleAesthetics} ${dayTogglePosition} ${dayToggleTransition}`;
+
+  // general link hover style
   const linkHover = `hover:text-blue-600 dark-hover:text-orange-500`;
 
+  // fetch repos for selected date
+  const dateKey = selectedDate.format('YYYY-MM-DD').toString();
+  const selectedHackernews = hackernewsDaily[selectedDate.format('YYYY-MM-DD')];
+
   return (
-    <div className="bg-gray-200 dark:bg-gray-700 min-h-full">
+    <div className="min-h-full">
       <GlobalHotKeys
         keyMap={keyMap}
         handlers={handlers}
