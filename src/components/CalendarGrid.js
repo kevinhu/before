@@ -13,7 +13,6 @@ import { FaHackerNewsSquare, FaRedditSquare } from 'react-icons/fa';
 import hackernewsDaily from '../assets/hackernews_github.json';
 
 import NoRepos from '../assets/cat-in-space.svg';
-import HackernewsIcon from '../assets/hackernews_icon.svg';
 
 function CalendarGrid() {
   const minYear = 2008;
@@ -95,7 +94,7 @@ function CalendarGrid() {
     LAST_WEEK: prevWeek,
   };
 
-  const slideAesthetics = 'shadow-2xl bg-white rounded-lg px-8 py-8';
+  const slideAesthetics = 'shadow-2xl bg-white rounded-lg px-8 py-6';
   const slideDark = 'dark:bg-gray-800 dark:text-white';
   const slideTransition = 'transition ease-in duration-200';
   const slideSizing = 'sm:w-3/4 md:w-3/4 lg:w-3/4';
@@ -172,10 +171,10 @@ function CalendarGrid() {
       </div>
 
       <div
-        className="rounded-lg shadow-xl bg-white dark:bg-gray-800"
+        className="rounded-lg shadow-xl bg-white dark:bg-gray-800 text-xl"
         style={{ width: 'max-content', margin: '0 auto' }}>
         <div
-          className="flex justify-center items-center pt-1 text-xl leading-10 dark:text-gray-200"
+          className="flex justify-center items-center pt-4 pb-2 dark:text-gray-200"
           style={{ width: 'max-content', margin: '0 auto' }}>
           <div
             className={`${
@@ -183,7 +182,9 @@ function CalendarGrid() {
             }`}>
             <HiOutlineChevronLeft onClick={lastYear} />
           </div>
-          <div className="align-middle mx-1 select-none">{selectedYear}</div>
+          <div className="align-middle mx-1 select-none shadow-inner px-2 rounded bg-gray-200 dark:bg-gray-700">
+            {selectedYear}
+          </div>
           <div
             className={`${
               selectedYear < maxYear ? yearToggleStyle : 'text-transparent'
@@ -269,7 +270,7 @@ function CalendarGrid() {
               <HiOutlineChevronLeft onClick={yesterday} />
             </div>
             <div
-              className="align-middle select-none mx-1 text-center shadow-inner py-1 px-2 rounded bg-gray-100 dark:bg-gray-700"
+              className="align-middle select-none mx-1 text-center shadow-inner py-1 px-2 rounded bg-gray-200 dark:bg-gray-700"
               style={{ width: 'max-content' }}>
               {selectedDate.format('MMMM Do, YYYY')}
             </div>
