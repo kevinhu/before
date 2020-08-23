@@ -182,6 +182,7 @@ function CalendarGrid() {
                       className={`cursor-pointer bg-gray-400 dark:bg-gray-600 ${gridSizing} ${gridTransition}`}
                       style={{
                         backgroundColor: isSameDay && '#f25d9c',
+                        opacity: date.format('YYYY-MM-DD') in hackernewsDaily ? 1 : 0.5
                       }}
                       data-date={date}
                       data-tip={date.format('MMMM Do, YYYY')}
