@@ -116,6 +116,8 @@ function CalendarGrid() {
 
   const selectedHackernews = hackernewsDaily[selectedDate.format('YYYY-MM-DD')];
 
+  const linkHover = `hover:text-blue-600 dark-hover:text-orange-500`
+
   return (
     <div className="bg-gray-200 dark:bg-gray-700 min-h-full">
       <GlobalHotKeys
@@ -234,13 +236,13 @@ function CalendarGrid() {
             {selectedHackernews
               ? selectedHackernews.map((repo, index) => {
                   return (
-                    <div className="flex">
+                    <div className="flex py-2">
                       <div className="w-1/12">{repo.daily_rank}</div>
-                      <a className="w-3/4" href={repo.url} target="_blank">
+                      <a className={`w-3/4 ${linkHover}`} href={repo.url} target="_blank">
                         {repo.title}
                       </a>
                       <a
-                        className="w-1/4"
+                        className={`w-1/4 ${linkHover}`}
                         href={`https://news.ycombinator.com/item?id=${repo.objectID}`}
                         target="_blank">
                         <FaHackerNewsSquare />
