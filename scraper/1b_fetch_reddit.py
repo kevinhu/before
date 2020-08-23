@@ -11,7 +11,7 @@ from ratelimit import limits, sleep_and_retry
 import os
 import time
 
-REDDIT_COMMENTS_URL = "https://api.pushshift.io/reddit/search/comment/"
+REDDIT_COMMENTS_URL = "https://api.pushshift.io/reddit/search/submission/"
 
 @sleep_and_retry
 @limits(calls=1, period=1)
@@ -67,14 +67,14 @@ def fetch_comments_since(start_time, query, output_dir):
                 print(f"Unsuccessful response: code {r.status_code}, {r.text}")
                 break
 
-# start_time = datetime.strptime("2000-01-01 00:00:00", '%Y-%m-%d %H:%M:%S')
-start_time = datetime.strptime("2020-01-22 00:00:00", '%Y-%m-%d %H:%M:%S')
+start_time = datetime.strptime("2000-01-01 00:00:00", '%Y-%m-%d %H:%M:%S')
+# start_time = datetime.strptime("2020-07-08 00:00:00", '%Y-%m-%d %H:%M:%S')
 
 query = {
     "q": "github.com",
     "sort": "asc",
     "sort_type": "created_utc",
-    "size": 500,
+    "size": 250,
 }
 
 fetch_comments_since(start_time, query, "/raw/reddit_github")
