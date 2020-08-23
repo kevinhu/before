@@ -77,7 +77,7 @@ reddit = reddit[
     ]
 ]
 
-reddit = reddit.rename({"github_url":"url","score":"points"})
+reddit = reddit.rename({"github_url":"url","score":"points"}, axis=1)
 
 reddit.to_feather(
     config.DATA_DIR / "processed/reddit_github.feather",
