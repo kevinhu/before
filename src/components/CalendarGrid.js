@@ -9,7 +9,11 @@ import {daysInYearByWeek} from '../utils'
 
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 
+import hackernews_daily from '../assets/hackernews_github.json';
+
 function CalendarGrid() {
+
+
   const minYear = 2008;
   const maxYear = moment().year();
   
@@ -109,6 +113,10 @@ function CalendarGrid() {
   if (latestDate.isBefore(selectedDate)) {
     setSelectedDate(latestDate);
   }
+  
+  const dateKey = selectedDate.format("YYYY-MM-DD").toString()
+
+  console.log(hackernews_daily[dateKey])
 
   return (
     <div className="bg-gray-200 dark:bg-gray-700 min-h-full">
@@ -209,7 +217,7 @@ function CalendarGrid() {
       <div className="flex items-center justify-center w-screen pt-12 pb-12">
         <div
           className={`text-center w-11/12 max-w-screen-md ${slideAesthetics} ${slidePositioning} ${slideDark} ${slideTransition}`}>
-          <div>Top pages on {selectedDate && selectedDate.format('L')} </div>
+          <div>{hackernews_daily[selectedDate.format("YYYY-MM-DD")].toString()}</div>
         </div>
       </div>
 
