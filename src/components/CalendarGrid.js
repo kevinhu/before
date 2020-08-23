@@ -93,6 +93,12 @@ function CalendarGrid() {
   const yearToggleTransition = 'transition ease-in duration-200';
   const yearToggleStyle = `${yearToggleAesthetics} ${yearTogglePosition} ${yearToggleTransition}`;
 
+  const dayToggleAesthetics =
+    'rounded hover:bg-gray-300 dark-hover:bg-gray-600';
+  const dayTogglePosition = 'inline cursor-pointer align-middle';
+  const dayToggleTransition = 'transition ease-in duration-200';
+  const dayToggleStyle = `${dayToggleAesthetics} ${dayTogglePosition} ${dayToggleTransition}`;
+
   const changeYear = (increment) => {
     let targetYear = selectedYear + increment;
 
@@ -187,7 +193,7 @@ function CalendarGrid() {
                         opacity:
                           date.format('YYYY-MM-DD') in hackernewsDaily
                             ? 1
-                            : 0.5,
+                            : 0.4,
                       }}
                       data-date={date}
                       data-tip={date.format('MMMM Do, YYYY')}
@@ -229,8 +235,26 @@ function CalendarGrid() {
       <div className="flex items-center justify-center w-screen pt-12 pb-12">
         <div
           className={`max-w-screen-md ${slideAesthetics} ${slideDark} ${slideTransition} ${slideSizing}`}>
-          <div className="text-lg pb-4">
+          <div className="inline">
+          <HiOutlineChevronLeft
+            className={`${
+              selectedYear > minYear
+                ? dayToggleStyle
+                : 'inline text-transparent'
+            }`}
+            onClick={yesterday}
+          />
+          <div className="inline text-lg pb-4">
             Top repos on {selectedDate.format('MMMM Do, YYYY')}
+          </div>
+          <HiOutlineChevronRight
+            className={`${
+              selectedYear > minYear
+                ? dayToggleStyle
+                : 'inline text-transparent'
+            }`}
+            onClick={tomorrow}
+          />
           </div>
           <div>
             {selectedHackernews
