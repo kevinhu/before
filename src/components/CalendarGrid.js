@@ -104,14 +104,14 @@ function CalendarGrid() {
     'rounded py-1 px-2 text-xs shadow-sm bg-gray-400 dark:bg-gray-800';
 
   const yearToggleAesthetics =
-    'rounded hover:bg-gray-300 dark-hover:bg-gray-600';
+    'text-lg rounded hover:bg-gray-300 dark-hover:bg-gray-600 p-1';
   const yearTogglePosition = 'inline cursor-pointer align-middle';
   const yearToggleTransition = 'transition ease-in duration-200';
   const yearToggleStyle = `${yearToggleAesthetics} ${yearTogglePosition} ${yearToggleTransition}`;
 
   const dayToggleAesthetics =
-    'rounded hover:bg-gray-300 dark-hover:bg-gray-600';
-  const dayTogglePosition = 'inline cursor-pointer align-middle';
+    'rounded hover:bg-gray-300 dark-hover:bg-gray-600 p-2';
+  const dayTogglePosition = 'cursor-pointer align-middle';
   const dayToggleTransition = 'transition ease-in duration-200';
   const dayToggleStyle = `${dayToggleAesthetics} ${dayTogglePosition} ${dayToggleTransition}`;
 
@@ -175,27 +175,21 @@ function CalendarGrid() {
         className="rounded-lg shadow-xl bg-white dark:bg-gray-800"
         style={{ width: 'max-content', margin: '0 auto' }}>
         <div
-          className="pt-1 text-xl leading-10 dark:text-gray-200"
+          className="flex justify-center items-center pt-1 text-xl leading-10 dark:text-gray-200"
           style={{ width: 'max-content', margin: '0 auto' }}>
-          <HiOutlineChevronLeft
+          <div
             className={`${
-              selectedYear > minYear
-                ? yearToggleStyle
-                : 'inline text-transparent'
-            }`}
-            onClick={lastYear}
-          />
-          <div className="inline align-middle mx-1 select-none">
-            {selectedYear}
+              selectedYear > minYear ? yearToggleStyle : 'text-transparent'
+            }`}>
+            <HiOutlineChevronLeft onClick={lastYear} />
           </div>
-          <HiOutlineChevronRight
+          <div className="align-middle mx-1 select-none">{selectedYear}</div>
+          <div
             className={`${
-              selectedYear < maxYear
-                ? yearToggleStyle
-                : 'inline text-transparent'
-            }`}
-            onClick={nextYear}
-          />
+              selectedYear < maxYear ? yearToggleStyle : 'text-transparent'
+            }`}>
+            <HiOutlineChevronRight onClick={nextYear} />
+          </div>
         </div>
         <div
           className="flex p-1"
@@ -261,29 +255,32 @@ function CalendarGrid() {
       <div className="flex items-center justify-center w-screen pt-12 pb-12">
         <div
           className={`max-w-screen-md ${slideAesthetics} ${slideDark} ${slideTransition} ${slideSizing}`}>
-          <div className="inline mx-auto text-center text-lg ">
-            <div>
-              <HiOutlineChevronLeft
-                className={`${
-                  selectedYear > minYear
-                    ? dayToggleStyle
-                    : 'inline text-transparent'
-                }`}
-                onClick={yesterday}
-              />
-              <div
-                className="align-middle select-none inline mx-1 mb-4 text-center shadow-inner py-1 px-2 rounded bg-gray-100 dark:bg-gray-700"
-                style={{ width: 'max-content' }}>
-                {selectedDate.format('MMMM Do, YYYY')}
-              </div>
-              <HiOutlineChevronRight
-                className={`${
-                  selectedYear > minYear
-                    ? dayToggleStyle
-                    : 'inline text-transparent'
-                }`}
-                onClick={tomorrow}
-              />
+          <div className="flex justify-center items-center text-lg ">
+            <div
+              className={`${
+                selectedDate
+                  .clone()
+                  .add(-1, 'days')
+                  .isAfter(absoluteEarliestDate)
+                  ? dayToggleStyle
+                  : 'text-transparent'
+              }`}
+              style={{ width: 'max-content', height: 'max-content' }}>
+              <HiOutlineChevronLeft onClick={yesterday} />
+            </div>
+            <div
+              className="align-middle select-none mx-1 text-center shadow-inner py-1 px-2 rounded bg-gray-100 dark:bg-gray-700"
+              style={{ width: 'max-content' }}>
+              {selectedDate.format('MMMM Do, YYYY')}
+            </div>
+            <div
+              className={`${
+                selectedDate.clone().add(1, 'days').isBefore(absoluteLatestDate)
+                  ? dayToggleStyle
+                  : 'text-transparent'
+              }`}
+              style={{ width: 'max-content', height: 'max-content' }}>
+              <HiOutlineChevronRight onClick={tomorrow} />
             </div>
           </div>
           <div>
