@@ -22,6 +22,14 @@ function CalendarGrid() {
 
   let datesByWeek = daysInYearByWeek(selectedYear);
 
+  let earliestDate = datesByWeek[0][0];
+  let latestDate = datesByWeek.slice(-1)[0].slice(-1)[0];
+
+  let absoluteEarliestDate = moment({ year: minYear, month: 0, date: 1 }).startOf('week').add(-1, 'days')
+  let absoluteLatestDate = moment({ year: maxYear, month: 11, date: 31 }).endOf('week')
+
+  console.log(absoluteLatestDate)
+
   const [selectedDate, _setSelectedDate] = useState(datesByWeek[0][0]);
 
   const selectedDateRef = React.useRef(selectedDate);
@@ -39,39 +47,30 @@ function CalendarGrid() {
   const gridSizing = 'w-4 h-4 rounded';
   const gridTransition = 'transition ease-in duration-200';
 
+  const incrementDay = (increment) => {
+    let targetDate = selectedDateRef.current.clone();
+
+    targetDate.add(increment, 'days');
+
+    if (targetDate.isAfter(absoluteEarliestDate) && targetDate.isBefore(absoluteLatestDate)) {
+      setSelectedDate(targetDate);
+    }
+  };
+
   const tomorrow = () => {
-    let currentDate = selectedDateRef.current.clone();
-
-    currentDate.add(1, 'days');
-
-    setSelectedDate(currentDate);
-
+    incrementDay(1);
   };
 
   const nextWeek = () => {
-    let currentDate = selectedDateRef.current.clone();
-
-    currentDate.add(7, 'days');
-    setSelectedDate(currentDate);
-
+    incrementDay(7);
   };
 
   const yesterday = () => {
-    let currentDate = selectedDateRef.current.clone();
-
-    currentDate.add(-1, 'days');
-
-    setSelectedDate(currentDate);
-
+    incrementDay(-1);
   };
 
   const prevWeek = () => {
-    let currentDate = selectedDateRef.current.clone();
-
-    currentDate.add(-7, 'days');
-
-    setSelectedDate(currentDate);
-
+    incrementDay(-7);
   };
 
   const keyMap = {
@@ -110,14 +109,14 @@ function CalendarGrid() {
 
   const lastYear = () => {
     if (selectedYear > minYear) {
-      setSelectedDate(selectedDate.clone().add(-1, 'years'))
+      setSelectedDate(selectedDate.clone().add(-1, 'years'));
       changeYear(-1);
     }
   };
 
   const nextYear = () => {
     if (selectedYear < maxYear) {
-      setSelectedDate(selectedDate.clone().add(1, 'years'))
+      setSelectedDate(selectedDate.clone().add(1, 'years'));
       changeYear(1);
     }
   };
@@ -129,9 +128,6 @@ function CalendarGrid() {
       setSelectedYear(selectedYear + increment);
     }
   };
-
-  let earliestDate = datesByWeek[0][0];
-  let latestDate = datesByWeek.slice(-1)[0].slice(-1)[0];
 
   if (earliestDate.isAfter(selectedDate)) {
     changeYear(-1);
