@@ -12,6 +12,8 @@ import { FaHackerNewsSquare, FaRedditSquare } from 'react-icons/fa';
 
 import hackernewsDaily from '../assets/hackernews_github.json';
 
+import NoRepos from '../assets/cat-in-space.svg';
+
 function CalendarGrid() {
   const minYear = 2008;
   const maxYear = moment().year();
@@ -116,7 +118,7 @@ function CalendarGrid() {
 
   const selectedHackernews = hackernewsDaily[selectedDate.format('YYYY-MM-DD')];
 
-  const linkHover = `hover:text-blue-600 dark-hover:text-orange-500`
+  const linkHover = `hover:text-blue-600 dark-hover:text-orange-500`;
 
   return (
     <div className="bg-gray-200 dark:bg-gray-700 min-h-full">
@@ -229,28 +231,41 @@ function CalendarGrid() {
       <div className="flex items-center justify-center w-screen pt-12 pb-12">
         <div
           className={`max-w-screen-md ${slideAesthetics} ${slideDark} ${slideTransition} ${slideSizing}`}>
-          <div className="text-lg pb-4">
-            Top repos on {selectedDate.format('MMMM Do, YYYY')}
+          <div className="text-lg mx-auto mb-4 text-center shadow-inner py-1 px-2 rounded bg-gray-100 dark:bg-gray-700" style={{width:'max-content'}}>
+            {selectedDate.format('MMMM Do, YYYY')}
           </div>
           <div>
-            {selectedHackernews
-              ? selectedHackernews.map((repo, index) => {
-                  return (
-                    <div className="flex py-2">
-                      <div className="w-1/12">{repo.daily_rank}</div>
-                      <a className={`w-3/4 ${linkHover}`} href={repo.url} target="_blank">
-                        {repo.title}
-                      </a>
-                      <a
-                        className={`w-1/4 ${linkHover}`}
-                        href={`https://news.ycombinator.com/item?id=${repo.objectID}`}
-                        target="_blank">
-                        <FaHackerNewsSquare />
-                      </a>
-                    </div>
-                  );
-                })
-              : 'nothing'}
+            {selectedHackernews ? (
+              selectedHackernews.map((repo, index) => {
+                return (
+                  <div className="flex py-2">
+                    <div className="w-1/12">{repo.daily_rank}</div>
+                    <a
+                      className={`w-3/4 ${linkHover}`}
+                      href={repo.url}
+                      target="_blank">
+                      {repo.title}
+                    </a>
+                    <a
+                      className={`w-1/4 ${linkHover}`}
+                      href={`https://news.ycombinator.com/item?id=${repo.objectID}`}
+                      target="_blank">
+                      <FaHackerNewsSquare />
+                    </a>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="text-center w-full">
+                <img
+                  alt="No repos found."
+                  className="py-2 w-1/2 m-auto"
+                  src={NoRepos}></img>
+                  <div>
+                  No repos found.
+                  </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
