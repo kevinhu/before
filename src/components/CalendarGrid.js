@@ -5,18 +5,17 @@ import ReactTooltip from 'react-tooltip';
 
 import Styles from './CalendarGrid.module.css';
 
-import {daysInYearByWeek} from '../utils'
+import { daysInYearByWeek } from '../utils';
 
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
+import {FaHackerNewsSquare, FaRedditSquare} from 'react-icons/fa'
 
-import hackernews_daily from '../assets/hackernews_github.json';
+import hackernewsDaily from '../assets/hackernews_github.json';
 
 function CalendarGrid() {
-
-
   const minYear = 2008;
   const maxYear = moment().year();
-  
+
   const [selectedYear, setSelectedYear] = useState(maxYear);
 
   let datesByWeek = daysInYearByWeek(selectedYear);
@@ -80,11 +79,10 @@ function CalendarGrid() {
     LAST_WEEK: prevWeek,
   };
 
-  const slidePositioning =
-    'relative flex align-center justify-center origin-center';
-  const slideAesthetics = 'shadow-2xl bg-white rounded-lg py-48';
+  const slideAesthetics = 'shadow-2xl bg-white rounded-lg px-8 py-8';
   const slideDark = 'dark:bg-gray-800 dark:text-white';
   const slideTransition = 'transition ease-in duration-200';
+  const slideSizing = 'sm:w-3/4 md:w-3/4 lg:w-1/2'
 
   const keyAesthetics =
     'rounded py-1 px-2 text-xs shadow-sm bg-gray-400 dark:bg-gray-800';
@@ -113,10 +111,10 @@ function CalendarGrid() {
   if (latestDate.isBefore(selectedDate)) {
     setSelectedDate(latestDate);
   }
-  
-  const dateKey = selectedDate.format("YYYY-MM-DD").toString()
 
-  console.log(hackernews_daily[dateKey])
+  const dateKey = selectedDate.format('YYYY-MM-DD').toString();
+
+  const selectedHackernews = hackernewsDaily[selectedDate.format('YYYY-MM-DD')];
 
   return (
     <div className="bg-gray-200 dark:bg-gray-700 min-h-full">
@@ -138,9 +136,13 @@ function CalendarGrid() {
           className="pt-1 text-xl leading-10 dark:text-gray-200"
           style={{ width: 'max-content', margin: '0 auto' }}>
           <HiOutlineChevronLeft
-            className={`${selectedYear > minYear ? yearToggleStyle : 'inline text-transparent'}`}
+            className={`${
+              selectedYear > minYear
+                ? yearToggleStyle
+                : 'inline text-transparent'
+            }`}
             onClick={() => {
-              if (selectedYear > minYear){
+              if (selectedYear > minYear) {
                 changeYear(-1);
               }
             }}
@@ -149,9 +151,13 @@ function CalendarGrid() {
             {selectedYear}
           </div>
           <HiOutlineChevronRight
-            className={`${selectedYear < maxYear ? yearToggleStyle : 'inline text-transparent'}`}
+            className={`${
+              selectedYear < maxYear
+                ? yearToggleStyle
+                : 'inline text-transparent'
+            }`}
             onClick={() => {
-              if (selectedYear < maxYear){
+              if (selectedYear < maxYear) {
                 changeYear(1);
               }
             }}
@@ -216,8 +222,21 @@ function CalendarGrid() {
 
       <div className="flex items-center justify-center w-screen pt-12 pb-12">
         <div
-          className={`text-center w-11/12 max-w-screen-md ${slideAesthetics} ${slidePositioning} ${slideDark} ${slideTransition}`}>
-          <div>{hackernews_daily[selectedDate.format("YYYY-MM-DD")].toString()}</div>
+          className={`max-w-screen-md ${slideAesthetics} ${slideDark} ${slideTransition} ${slideSizing}`}>
+          <div className="text-lg pb-4">Top repos on {selectedDate.format('MMMM Do, YYYY')}</div>
+          <div>
+            {selectedHackernews ? selectedHackernews.map(
+              (repo, index) => {
+                return (
+                  <div className="flex">
+                    <div className="w-1/12">{repo.daily_rank}</div>
+                    <a className="w-3/4" href={repo.url}>{repo.title}</a>
+                    <a className="w-1/4" href={`https://news.ycombinator.com/item?id=${repo.objectID}`}><FaHackerNewsSquare/></a>
+                  </div>
+                );
+              },
+            ) : "nothing"}
+          </div>
         </div>
       </div>
 
