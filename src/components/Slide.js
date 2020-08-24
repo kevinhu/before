@@ -36,7 +36,7 @@ const Slide = ({
 		<div className="flex items-center justify-center w-screen pt-12 pb-12">
 			<div
 				className={`max-w-screen-md ${slideAesthetics} ${slideDark} ${slideTransition} ${slideSizing}`}>
-				<div className="flex justify-center items-center text-lg ">
+				<div className="flex justify-center items-center text-lg pb-3">
 					<div
 						className={`${dayToggleStyle} ${
 							moment(selectedDate).add(-1, 'days').isAfter(absoluteEarliestDate)

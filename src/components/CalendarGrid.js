@@ -161,6 +161,12 @@ const CalendarGrid = () => {
 
   return (
     <div className="min-h-full">
+      <div
+        className="p-2 text-center text-gray-800 dark:text-gray-300 mx-auto"
+        style={{ width: 'max-content' }}>
+        Explore daily trending GitHub repositories from Hacker News on every day
+        since 2008.<br />Updated monthly.
+      </div>
       <GlobalHotKeys
         keyMap={keyMap}
         handlers={handlers}
@@ -172,7 +178,7 @@ const CalendarGrid = () => {
         offset={{ top: -6 }}
       />
 
-      <div className="text-center text-gray-800 dark:text-gray-300 pb-4">
+      <div className="text-center text-gray-700 dark:text-gray-400 pb-6 pt-2">
         Pro tip: use&nbsp;
         <div className={`${keyAesthetics}`} style={keyStyle}>
           W

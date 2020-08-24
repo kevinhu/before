@@ -26,13 +26,18 @@ function App() {
     return <div />;
   }
 
+  // general link hover style
+  const linkHover = `hover:text-blue-600 dark-hover:text-orange-500`;
+
   return (
     <Router>
-      <div className="text-center w-screen pt-8 bg-gray-200 dark:bg-gray-700">
+      <div
+        className="text-center w-screen pt-8 bg-gray-200 dark:bg-gray-700"
+        style={{ marginBottom: '-1rem' }}>
         <DarkModeToggle
           onChange={toggleTheme}
           checked={theme === 'dark'}
-          size={50}
+          size={'3rem'}
           speed={5}
         />
       </div>
@@ -47,6 +52,26 @@ function App() {
           <NotFound />
         </Route>
       </Switch>
+      <div className="text-center pb-12 text-gray-800 dark:text-gray-200">
+        Made by{' '}
+        <a
+          className={`underline ${linkHover}`}
+          href="https://kevinhu.io"
+          target="_blank"
+          rel="noopener noreferrer">
+          Kevin Hu
+        </a>
+        <br />
+        View{' '}
+        <a
+          className={`underline ${linkHover}`}
+          href="https://github.com/kevinhu/before"
+          target="_blank"
+          rel="noopener noreferrer">
+          source
+        </a>{' '}
+        on GitHub
+      </div>
     </Router>
   );
 }

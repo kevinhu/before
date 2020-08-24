@@ -4,7 +4,7 @@ import CalendarGrid from '../components/CalendarGrid';
 
 function Explore() {
 	return (
-		<div className="pt-15 min-h-full">
+		<div className="min-h-full">
 			<CalendarGrid />
 		</div>
 	);
