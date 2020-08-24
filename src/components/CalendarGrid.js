@@ -1,51 +1,22 @@
-import React, { useState } from 'react';
-import { GlobalHotKeys } from 'react-hotkeys';
-import ReactTooltip from 'react-tooltip';
-
-import { daysInYearByWeek } from '../utils';
+import React from 'react';
 
 import moment from 'moment';
 
-import Slide from './Slide';
-import Styles from './CalendarGrid.module.css';
-
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
-
-import { useHistory, useLocation } from 'react-router-dom';
-import queryString from 'query-string';
 
 import hackernewsDaily from '../assets/hackernews_github.json';
 
 const DATE_KEY_FORMAT = 'YYYY-MM-DD';
 
-const CalendarGrid = () => {
-  let history = useHistory();
-  let location = useLocation();
-  let params = queryString.parse(location.search);
-
-  // year bounds
-  const minYear = 2008;
-  const maxYear = moment().year();
-
-  let date = params.date;
-
-  if (date) {
-    date = moment(date, DATE_KEY_FORMAT);
-    if (!date.isValid()) {
-      date = moment();
-      history.push(`/before?date=${date.format(DATE_KEY_FORMAT)}`);
-    }
-  } else {
-    date = moment();
-    history.push(`/before?date=${date.format(DATE_KEY_FORMAT)}`);
-  }
-
-  // current date to display
-  const [selectedDate, _setSelectedDate] = useState(date);
-
-  // year to display
-  const [selectedYear, setSelectedYear] = useState(selectedDate.year());
-
+const CalendarGrid = ({
+  selectedYear,
+  setSelectedYear,
+  selectedDate,
+  setSelectedDate,
+  minYear,
+  maxYear,
+  datesByWeek,
+}) => {
   // year incrementers
   const changeYear = (increment) => {
     let targetYear = selectedYear + increment;
@@ -69,83 +40,12 @@ const CalendarGrid = () => {
     }
   };
 
-  // dates for grid
-  let datesByWeek = daysInYearByWeek(selectedYear);
-
-  // absolute grid bounds
-  let absoluteEarliestDate = moment({ year: minYear - 1, month: 11, date: 31 });
-  let absoluteLatestDate = moment({ year: maxYear + 1, month: 0, date: 1 });
-
-  // use ref to for handlers and URL
-  const selectedDateRef = React.useRef(selectedDate);
-  const setSelectedDate = (date) => {
-    selectedDateRef.current = date;
-    _setSelectedDate(date);
-    history.push(`/before?date=${date.format(DATE_KEY_FORMAT)}`);
-  };
-
   // change date on cell click
   const gridClick = (event) => {
     const date = moment(parseInt(event.target.dataset.date));
 
     setSelectedDate(date.clone());
   };
-
-  // general date incrementer
-  const incrementDay = (increment) => {
-    let targetDate = selectedDateRef.current.clone();
-
-    targetDate.add(increment, 'days');
-
-    if (
-      targetDate.isAfter(absoluteEarliestDate) &&
-      targetDate.isBefore(absoluteLatestDate)
-    ) {
-      setSelectedYear(targetDate.year());
-      setSelectedDate(targetDate);
-    }
-  };
-
-  // date increments for keys
-  const tomorrow = () => {
-    incrementDay(1);
-  };
-
-  const nextWeek = () => {
-    incrementDay(7);
-  };
-
-  const yesterday = () => {
-    incrementDay(-1);
-  };
-
-  const prevWeek = () => {
-    incrementDay(-7);
-  };
-
-  const keyMap = {
-    TOMORROW: ['s'],
-    YESTERDAY: ['w'],
-    NEXT_WEEK: ['d'],
-    LAST_WEEK: ['a'],
-  };
-
-  const handlers = {
-    TOMORROW: tomorrow,
-    YESTERDAY: yesterday,
-    NEXT_WEEK: nextWeek,
-    LAST_WEEK: prevWeek,
-  };
-
-  // grid styles
-  const gridSizing = 'w-4 h-4 rounded';
-  const gridTransition = 'transition ease-in duration-200';
-  const gridDisabled = 'bg-transparent cursor-default';
-
-  // key styles
-  const keyAesthetics =
-    'inline text-center font-mono rounded pt-1 pb-1 px-2 shadow-sm text-xs bg-gray-400 dark:bg-gray-800';
-  const keyStyle = { width: 'max-content' };
 
   // year toggler styles
   const yearToggleAesthetics = 'rounded p-2';
@@ -155,153 +55,106 @@ const CalendarGrid = () => {
   const yearToggleHover =
     'cursor-pointer hover:bg-gray-300 dark-hover:bg-gray-600';
 
-  // fetch repos for selected date
-  const dateKey = selectedDate.format(DATE_KEY_FORMAT);
-  const selectedHackernews = hackernewsDaily[dateKey];
+  // grid styles
+  const gridSizing = 'w-4 h-4 rounded';
+  const gridTransition = 'transition ease-in duration-200';
+  const gridDisabled = 'bg-transparent cursor-default';
 
   return (
-    <div className="min-h-full">
+    <div
+      className="rounded-lg shadow-xl bg-white dark:bg-gray-800 text-xl"
+      style={{ width: 'max-content', margin: '0 auto' }}>
       <div
-        className="p-2 text-center text-gray-800 dark:text-gray-300 mx-auto"
-        style={{ width: 'max-content' }}>
-        Explore daily trending GitHub repositories from Hacker News on every day
-        since 2008.<br />Updated monthly.
-      </div>
-      <GlobalHotKeys
-        keyMap={keyMap}
-        handlers={handlers}
-        style={{ outline: 'none' }}
-      />
-      <ReactTooltip
-        effect="solid"
-        className={`shadow ${Styles.tooltip}`}
-        offset={{ top: -6 }}
-      />
-
-      <div className="text-center text-gray-700 dark:text-gray-400 pb-6 pt-2">
-        Pro tip: use&nbsp;
-        <div className={`${keyAesthetics}`} style={keyStyle}>
-          W
-        </div>
-        , &nbsp;
-        <div className={`${keyAesthetics}`} style={keyStyle}>
-          A
-        </div>
-        , &nbsp;
-        <div className={`${keyAesthetics}`} style={keyStyle}>
-          S
-        </div>
-        , and{' '}
-        <div className={`${keyAesthetics}`} style={keyStyle}>
-          D
-        </div>{' '}
-        to navigate the grid.
-      </div>
-
-      <div
-        className="rounded-lg shadow-xl bg-white dark:bg-gray-800 text-xl"
+        className="flex justify-center items-center pt-4 pb-2 dark:text-gray-200"
         style={{ width: 'max-content', margin: '0 auto' }}>
         <div
-          className="flex justify-center items-center pt-4 pb-2 dark:text-gray-200"
-          style={{ width: 'max-content', margin: '0 auto' }}>
-          <div
-            className={`${yearToggleStyle} ${
-              selectedYear > minYear ? yearToggleHover : 'text-transparent'
-            }`}
-            onClick={lastYear}>
-            <HiOutlineChevronLeft />
-          </div>
-          <div className="align-middle select-none mx-1 text-center shadow-inner py-1 px-2 rounded bg-gray-200 dark:bg-gray-700">
-            {selectedYear}
-          </div>
-          <div
-            className={`${yearToggleStyle} ${
-              selectedYear < maxYear ? yearToggleHover : 'text-transparent'
-            }`}
-            onClick={nextYear}>
-            <HiOutlineChevronRight />
-          </div>
+          className={`${yearToggleStyle} ${
+            selectedYear > minYear ? yearToggleHover : 'text-transparent'
+          }`}
+          onClick={lastYear}>
+          <HiOutlineChevronLeft />
+        </div>
+        <div className="align-middle select-none mx-1 text-center shadow-inner py-1 px-2 rounded bg-gray-200 dark:bg-gray-700">
+          {selectedYear}
         </div>
         <div
-          className="flex p-1"
-          style={{ width: 'max-content', margin: '0 auto' }}>
-          {datesByWeek.map((week, weekIndex) => (
-            <div className={`block`} key={weekIndex}>
-              {week.map((date, dateIndex) => {
-                const isSameDay = date.isSame(selectedDate, 'day');
-
-                const weekOfMonth =
-                  date.week() - moment(date).startOf('month').week() + 1;
-
-                return (
-                  <div
-                    className={`outer_grid relative`}
-                    style={{ padding: '2px' }}
-                    key={dateIndex}>
-                    <div
-                      className={`${
-                        date.year() === selectedYear
-                          ? 'cursor-pointer bg-gray-400 dark:bg-gray-600'
-                          : gridDisabled
-                      } ${gridSizing} ${gridTransition}`}
-                      style={{
-                        backgroundColor: isSameDay && '#f25d9c',
-                        opacity:
-                          date.format(DATE_KEY_FORMAT) in hackernewsDaily
-                            ? 1
-                            : 0.4,
-                      }}
-                      data-date={date}
-                      data-tip={
-                        date.year() === selectedYear
-                          ? date.format('MMMM Do, YYYY')
-                          : ''
-                      }
-                      onClick={
-                        date.year() === selectedYear ? gridClick : undefined
-                      }></div>
-                    {date.date() <= 7 &&
-                    (date.week() !== 1 || date.year() > selectedYear) ? (
-                      <div
-                        className={`bg-blue-400 dark:bg-orange-400 h-full inset-0`}
-                        style={{
-                          top: weekOfMonth === 1 ? '-1px' : '1px',
-                          position: 'absolute',
-                          width: '2px',
-                          marginLeft: '-1px',
-                        }}></div>
-                    ) : (
-                      ''
-                    )}
-                    {date.date() === 1 &&
-                    date.day() !== 0 &&
-                    !(weekIndex === 0 && dateIndex === 0) ? (
-                      <div
-                        className={`bg-blue-400 dark:bg-orange-400 w-full inset-0`}
-                        style={{
-                          position: 'absolute',
-                          height: '2px',
-                          marginTop: '-1px',
-                        }}></div>
-                    ) : (
-                      ''
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+          className={`${yearToggleStyle} ${
+            selectedYear < maxYear ? yearToggleHover : 'text-transparent'
+          }`}
+          onClick={nextYear}>
+          <HiOutlineChevronRight />
         </div>
       </div>
+      <div
+        className="flex p-1"
+        style={{ width: 'max-content', margin: '0 auto' }}>
+        {datesByWeek.map((week, weekIndex) => (
+          <div className={`block`} key={weekIndex}>
+            {week.map((date, dateIndex) => {
+              const isSameDay = date.isSame(selectedDate, 'day');
 
-      <Slide
-        selectedDate={selectedDate}
-        absoluteEarliestDate={absoluteEarliestDate}
-        absoluteLatestDate={absoluteLatestDate}
-        yesterday={yesterday}
-        tomorrow={tomorrow}
-        selectedRepos={selectedHackernews}
-      />
+              const weekOfMonth =
+                date.week() - moment(date).startOf('month').week() + 1;
+
+              return (
+                <div
+                  className={`outer_grid relative`}
+                  style={{ padding: '2px' }}
+                  key={dateIndex}>
+                  <div
+                    className={`${
+                      date.year() === selectedYear
+                        ? 'cursor-pointer bg-gray-400 dark:bg-gray-600'
+                        : gridDisabled
+                    } ${gridSizing} ${gridTransition}`}
+                    style={{
+                      backgroundColor: isSameDay && '#f25d9c',
+                      opacity:
+                        date.format(DATE_KEY_FORMAT) in hackernewsDaily
+                          ? 1
+                          : 0.4,
+                    }}
+                    data-date={date}
+                    data-tip={
+                      date.year() === selectedYear
+                        ? date.format('MMMM Do, YYYY')
+                        : ''
+                    }
+                    onClick={
+                      date.year() === selectedYear ? gridClick : undefined
+                    }></div>
+                  {date.date() <= 7 &&
+                  (date.week() !== 1 || date.year() > selectedYear) ? (
+                    <div
+                      className={`bg-blue-400 dark:bg-orange-400 h-full inset-0`}
+                      style={{
+                        top: weekOfMonth === 1 ? '-1px' : '1px',
+                        position: 'absolute',
+                        width: '2px',
+                        marginLeft: '-1px',
+                      }}></div>
+                  ) : (
+                    ''
+                  )}
+                  {date.date() === 1 &&
+                  date.day() !== 0 &&
+                  !(weekIndex === 0 && dateIndex === 0) ? (
+                    <div
+                      className={`bg-blue-400 dark:bg-orange-400 w-full inset-0`}
+                      style={{
+                        position: 'absolute',
+                        height: '2px',
+                        marginTop: '-1px',
+                      }}></div>
+                  ) : (
+                    ''
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -22,7 +22,13 @@ function App() {
     document.documentElement.classList.remove('mode-dark');
   }
 
-  if (!componentMounted) {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [setLoading]);
+
+  if (loading || !componentMounted) {
     return <div />;
   }
 
