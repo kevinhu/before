@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import moment from 'moment';
 
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
-import { FaHackerNewsSquare, FaRedditSquare } from 'react-icons/fa';
+import { FaHackerNewsSquare } from 'react-icons/fa';
 
 import NoRepos from '../assets/cat-in-space.svg';
 
@@ -22,12 +22,12 @@ const Slide = ({
 	const slideSizing = 'sm:w-3/4 md:w-3/4 lg:w-3/4';
 
 	// day toggler styles
-	const dayToggleAesthetics =
-		'rounded p-2';
+	const dayToggleAesthetics = 'rounded p-2';
 	const dayTogglePosition = 'align-middle';
 	const dayToggleTransition = 'transition ease-in duration-200';
 	const dayToggleStyle = `${dayToggleAesthetics} ${dayTogglePosition} ${dayToggleTransition}`;
-	const dayToggleHover = 'cursor-pointer hover:bg-gray-300 dark-hover:bg-gray-600'
+	const dayToggleHover =
+		'cursor-pointer hover:bg-gray-300 dark-hover:bg-gray-600';
 
 	// general link hover style
 	const linkHover = `hover:text-blue-600 dark-hover:text-orange-500`;
@@ -67,13 +67,14 @@ const Slide = ({
 					{selectedRepos ? (
 						selectedRepos.map((repo, index) => {
 							return (
-								<div className="flex py-2">
+								<div className="flex py-2" key={index}>
 									<div className="w-1/12 select-none">{repo.daily_rank}</div>
 									<div className="w-5/6 mr-3">
 										<a
 											className={`${linkHover}`}
 											href={repo.url}
-											target="_blank">
+											target="_blank"
+											rel="noopener noreferrer">
 											{repo.title}
 										</a>
 									</div>
@@ -81,7 +82,8 @@ const Slide = ({
 										<a
 											className={`w-1/4 ${linkHover}`}
 											href={`https://news.ycombinator.com/item?id=${repo.objectID}`}
-											target="_blank">
+											target="_blank"
+											rel="noopener noreferrer">
 											<div
 												className="rounded border-solid border-2 border-gray-400 h-auto flex"
 												style={{ width: 'fit-content' }}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import { GlobalHotKeys } from 'react-hotkeys';
 import ReactTooltip from 'react-tooltip';
@@ -15,6 +15,8 @@ import Slide from './Slide';
 
 import { useHistory, useParams } from 'react-router-dom';
 
+const DATE_KEY_FORMAT = 'YYYY-MM-DD'
+
 const CalendarGrid = () => {
   let history = useHistory();
   let params = useParams();
@@ -26,14 +28,14 @@ const CalendarGrid = () => {
   let date = params.date;
 
   if (date) {
-    date = moment(date, 'YYYY-MM-DD');
+    date = moment(date, DATE_KEY_FORMAT);
     if (!date.isValid()) {
       date = moment();
-      history.push(`/before/${date.format('YYYY-MM-DD')}`);
+      history.push(`/before/${date.format(DATE_KEY_FORMAT)}`);
     }
   } else {
     date = moment();
-    history.push(`/before/${date.format('YYYY-MM-DD')}`);
+    history.push(`/before/${date.format(DATE_KEY_FORMAT)}`);
   }
 
   // current date to display
@@ -68,10 +70,6 @@ const CalendarGrid = () => {
   // dates for grid
   let datesByWeek = daysInYearByWeek(selectedYear);
 
-  // grid bounds
-  let earliestDate = datesByWeek[0][0];
-  let latestDate = datesByWeek.slice(-1)[0].slice(-1)[0];
-
   // absolute grid bounds
   let absoluteEarliestDate = moment({ year: minYear - 1, month: 11, date: 31 });
   let absoluteLatestDate = moment({ year: maxYear + 1, month: 0, date: 1 });
@@ -81,7 +79,7 @@ const CalendarGrid = () => {
   const setSelectedDate = (date) => {
     selectedDateRef.current = date;
     _setSelectedDate(date);
-    history.push(`/before/${date.format('YYYY-MM-DD')}`);
+    history.push(`/before/${date.format(DATE_KEY_FORMAT)}`);
   };
 
   // change date on cell click
@@ -155,12 +153,9 @@ const CalendarGrid = () => {
   const yearToggleHover =
     'cursor-pointer hover:bg-gray-300 dark-hover:bg-gray-600';
 
-  // general link hover style
-  const linkHover = `hover:text-blue-600 dark-hover:text-orange-500`;
-
   // fetch repos for selected date
-  const dateKey = selectedDate.format('YYYY-MM-DD').toString();
-  const selectedHackernews = hackernewsDaily[selectedDate.format('YYYY-MM-DD')];
+  const dateKey = selectedDate.format(DATE_KEY_FORMAT);
+  const selectedHackernews = hackernewsDaily[dateKey];
 
   return (
     <div className="min-h-full">
@@ -223,7 +218,7 @@ const CalendarGrid = () => {
           className="flex p-1"
           style={{ width: 'max-content', margin: '0 auto' }}>
           {datesByWeek.map((week, weekIndex) => (
-            <div className={`block`}>
+            <div className={`block`} key={weekIndex}>
               {week.map((date, dateIndex) => {
                 const isSameDay = date.isSame(selectedDate, 'day');
 
@@ -233,7 +228,8 @@ const CalendarGrid = () => {
                 return (
                   <div
                     className={`outer_grid relative`}
-                    style={{ padding: '2px' }}>
+                    style={{ padding: '2px' }}
+                    key={dateIndex}>
                     <div
                       className={`${
                         date.year() === selectedYear
@@ -243,7 +239,7 @@ const CalendarGrid = () => {
                       style={{
                         backgroundColor: isSameDay && '#f25d9c',
                         opacity:
-                          date.format('YYYY-MM-DD') in hackernewsDaily
+                          date.format(DATE_KEY_FORMAT) in hackernewsDaily
                             ? 1
                             : 0.4,
                       }}
@@ -253,7 +249,9 @@ const CalendarGrid = () => {
                           ? date.format('MMMM Do, YYYY')
                           : ''
                       }
-                      onClick={date.year() === selectedYear && gridClick}></div>
+                      onClick={
+                        date.year() === selectedYear ? gridClick : undefined
+                      }></div>
                     {date.date() <= 7 &&
                     (date.week() !== 1 || date.year() > selectedYear) ? (
                       <div
