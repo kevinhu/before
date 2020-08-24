@@ -20,6 +20,29 @@ const CalendarGrid = () => {
 
   const [selectedYear, setSelectedYear] = useState(maxYear);
 
+  // year incrementers
+  const changeYear = (increment) => {
+    let targetYear = selectedYear + increment;
+
+    if (targetYear >= minYear && targetYear <= maxYear) {
+      setSelectedYear(selectedYear + increment);
+    }
+  };
+
+  const lastYear = () => {
+    if (selectedYear > minYear) {
+      setSelectedDate(selectedDate.clone().add(-1, 'years'));
+      changeYear(-1);
+    }
+  };
+
+  const nextYear = () => {
+    if (selectedYear < maxYear) {
+      setSelectedDate(selectedDate.clone().add(1, 'years'));
+      changeYear(1);
+    }
+  };
+
   // dates for grid
   let datesByWeek = daysInYearByWeek(selectedYear);
 
@@ -28,12 +51,8 @@ const CalendarGrid = () => {
   let latestDate = datesByWeek.slice(-1)[0].slice(-1)[0];
 
   // absolute grid bounds
-  let absoluteEarliestDate = moment({ year: minYear, month: 0, date: 1 })
-    .startOf('week')
-    .add(-1, 'days');
-  let absoluteLatestDate = moment({ year: maxYear, month: 11, date: 31 }).endOf(
-    'week',
-  );
+  let absoluteEarliestDate = moment({ year: minYear - 1, month: 11, date: 31 });
+  let absoluteLatestDate = moment({ year: maxYear + 1, month: 0, date: 1 });
 
   // current date to display
   const [selectedDate, _setSelectedDate] = useState(moment());
@@ -62,6 +81,9 @@ const CalendarGrid = () => {
       targetDate.isAfter(absoluteEarliestDate) &&
       targetDate.isBefore(absoluteLatestDate)
     ) {
+      console.log(targetDate.year());
+      setSelectedYear(targetDate.year());
+      console.log(selectedYear);
       setSelectedDate(targetDate);
     }
   };
@@ -97,54 +119,23 @@ const CalendarGrid = () => {
     LAST_WEEK: prevWeek,
   };
 
-  // year incrementers
-  const changeYear = (increment) => {
-    let targetYear = selectedYear + increment;
-
-    if (targetYear >= minYear && targetYear <= maxYear) {
-      setSelectedYear(selectedYear + increment);
-    }
-  };
-
-  const lastYear = () => {
-    if (selectedYear > minYear) {
-      setSelectedDate(selectedDate.clone().add(-1, 'years'));
-      changeYear(-1);
-    }
-  };
-
-  const nextYear = () => {
-    if (selectedYear < maxYear) {
-      setSelectedDate(selectedDate.clone().add(1, 'years'));
-      changeYear(1);
-    }
-  };
-
-  // change year to match date
-  if (earliestDate.isAfter(selectedDate)) {
-    changeYear(-1);
-  }
-
-  if (latestDate.isBefore(selectedDate)) {
-    changeYear(1);
-  }
-
   // grid styles
   const gridSizing = 'w-4 h-4 rounded';
   const gridTransition = 'transition ease-in duration-200';
+  const gridDisabled = 'bg-transparent cursor-default';
 
   // key styles
   const keyAesthetics =
     'inline text-center font-mono rounded pt-1 pb-1 px-2 shadow-sm text-xs bg-gray-400 dark:bg-gray-800';
-  const keyStyle = { width: 'max-content'};
+  const keyStyle = { width: 'max-content' };
 
   // year toggler styles
-  const yearToggleAesthetics =
-    'rounded p-2';
+  const yearToggleAesthetics = 'rounded p-2';
   const yearTogglePosition = 'inline align-middle';
   const yearToggleTransition = 'transition ease-in duration-200';
   const yearToggleStyle = `${yearToggleAesthetics} ${yearTogglePosition} ${yearToggleTransition}`;
-  const yearToggleHover =  'cursor-pointer hover:bg-gray-300 dark-hover:bg-gray-600'
+  const yearToggleHover =
+    'cursor-pointer hover:bg-gray-300 dark-hover:bg-gray-600';
 
   // general link hover style
   const linkHover = `hover:text-blue-600 dark-hover:text-orange-500`;
@@ -226,7 +217,11 @@ const CalendarGrid = () => {
                     className={`outer_grid relative`}
                     style={{ padding: '2px' }}>
                     <div
-                      className={`cursor-pointer bg-gray-400 dark:bg-gray-600 ${gridSizing} ${gridTransition}`}
+                      className={`${
+                        date.year() === selectedYear
+                          ? 'cursor-pointer bg-gray-400 dark:bg-gray-600'
+                          : gridDisabled
+                      } ${gridSizing} ${gridTransition}`}
                       style={{
                         backgroundColor: isSameDay && '#f25d9c',
                         opacity:
@@ -235,8 +230,12 @@ const CalendarGrid = () => {
                             : 0.4,
                       }}
                       data-date={date}
-                      data-tip={date.format('MMMM Do, YYYY')}
-                      onClick={gridClick}></div>
+                      data-tip={
+                        date.year() === selectedYear
+                          ? date.format('MMMM Do, YYYY')
+                          : ''
+                      }
+                      onClick={date.year() === selectedYear && gridClick}></div>
                     {date.date() <= 7 &&
                     (date.week() !== 1 || date.year() > selectedYear) ? (
                       <div
