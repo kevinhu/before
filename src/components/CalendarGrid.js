@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { GlobalHotKeys } from 'react-hotkeys';
 import ReactTooltip from 'react-tooltip';
@@ -13,12 +13,34 @@ import hackernewsDaily from '../assets/hackernews_github.json';
 
 import Slide from './Slide';
 
+import { useHistory, useParams } from 'react-router-dom';
+
 const CalendarGrid = () => {
+  let history = useHistory();
+  let params = useParams();
+
   // year bounds
   const minYear = 2008;
   const maxYear = moment().year();
 
-  const [selectedYear, setSelectedYear] = useState(maxYear);
+  let date = params.date;
+
+  if (date) {
+    date = moment(date, 'YYYY-MM-DD');
+    if (!date.isValid()) {
+      date = moment();
+      history.push(`/before/${date.format('YYYY-MM-DD')}`);
+    }
+  } else {
+    date = moment();
+    history.push(`/before/${date.format('YYYY-MM-DD')}`);
+  }
+
+  // current date to display
+  const [selectedDate, _setSelectedDate] = useState(date);
+
+  // year to display
+  const [selectedYear, setSelectedYear] = useState(selectedDate.year());
 
   // year incrementers
   const changeYear = (increment) => {
@@ -54,14 +76,12 @@ const CalendarGrid = () => {
   let absoluteEarliestDate = moment({ year: minYear - 1, month: 11, date: 31 });
   let absoluteLatestDate = moment({ year: maxYear + 1, month: 0, date: 1 });
 
-  // current date to display
-  const [selectedDate, _setSelectedDate] = useState(moment());
-
-  // use ref to for handlers
+  // use ref to for handlers and URL
   const selectedDateRef = React.useRef(selectedDate);
-  const setSelectedDate = (data) => {
-    selectedDateRef.current = data;
-    _setSelectedDate(data);
+  const setSelectedDate = (date) => {
+    selectedDateRef.current = date;
+    _setSelectedDate(date);
+    history.push(`/before/${date.format('YYYY-MM-DD')}`);
   };
 
   // change date on cell click
@@ -81,9 +101,7 @@ const CalendarGrid = () => {
       targetDate.isAfter(absoluteEarliestDate) &&
       targetDate.isBefore(absoluteLatestDate)
     ) {
-      console.log(targetDate.year());
       setSelectedYear(targetDate.year());
-      console.log(selectedYear);
       setSelectedDate(targetDate);
     }
   };
