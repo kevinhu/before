@@ -3,7 +3,7 @@ import config
 import ujson
 
 # limit top n per day
-DAILY_LIMIT = 25
+DAILY_LIMIT = 100
 
 hackernews = pd.read_feather(config.DATA_DIR / "intermediate/hackernews_github.feather")
 
