@@ -135,8 +135,8 @@ const CalendarGrid = () => {
 
   // key styles
   const keyAesthetics =
-    'inline font-mono rounded py-1 px-1 shadow text-xs bg-gray-400 dark:bg-gray-800';
-  const keyStyle = { width: 'max-content', paddingBottom: '0px' };
+    'inline text-center font-mono rounded pt-1 pb-1 px-2 shadow-sm text-xs bg-gray-400 dark:bg-gray-800';
+  const keyStyle = { width: 'max-content'};
 
   // year toggler styles
   const yearToggleAesthetics =
