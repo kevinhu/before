@@ -41,9 +41,6 @@ function App() {
         <Route exact path="/before">
           {<Explore />}
         </Route>
-        <Route exact path="/before/:date">
-          {<Explore />}
-        </Route>
 
         {/* Catch-all Route */}
         <Route path="/">

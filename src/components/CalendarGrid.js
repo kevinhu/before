@@ -1,25 +1,27 @@
 import React, { useState } from 'react';
-import moment from 'moment';
 import { GlobalHotKeys } from 'react-hotkeys';
 import ReactTooltip from 'react-tooltip';
 
-import Styles from './CalendarGrid.module.css';
-
 import { daysInYearByWeek } from '../utils';
+
+import moment from 'moment';
+
+import Slide from './Slide';
+import Styles from './CalendarGrid.module.css';
 
 import { HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 
+import { useHistory, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+
 import hackernewsDaily from '../assets/hackernews_github.json';
 
-import Slide from './Slide';
-
-import { useHistory, useParams } from 'react-router-dom';
-
-const DATE_KEY_FORMAT = 'YYYY-MM-DD'
+const DATE_KEY_FORMAT = 'YYYY-MM-DD';
 
 const CalendarGrid = () => {
   let history = useHistory();
-  let params = useParams();
+  let location = useLocation();
+  let params = queryString.parse(location.search);
 
   // year bounds
   const minYear = 2008;
@@ -31,11 +33,11 @@ const CalendarGrid = () => {
     date = moment(date, DATE_KEY_FORMAT);
     if (!date.isValid()) {
       date = moment();
-      history.push(`/before/${date.format(DATE_KEY_FORMAT)}`);
+      history.push(`/before?date=${date.format(DATE_KEY_FORMAT)}`);
     }
   } else {
     date = moment();
-    history.push(`/before/${date.format(DATE_KEY_FORMAT)}`);
+    history.push(`/before?date=${date.format(DATE_KEY_FORMAT)}`);
   }
 
   // current date to display
@@ -79,7 +81,7 @@ const CalendarGrid = () => {
   const setSelectedDate = (date) => {
     selectedDateRef.current = date;
     _setSelectedDate(date);
-    history.push(`/before/${date.format(DATE_KEY_FORMAT)}`);
+    history.push(`/before?date=${date.format(DATE_KEY_FORMAT)}`);
   };
 
   // change date on cell click
