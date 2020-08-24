@@ -135,15 +135,16 @@ const CalendarGrid = () => {
 
   // key styles
   const keyAesthetics =
-    'rounded py-1 px-2 text-xs shadow-sm bg-gray-400 dark:bg-gray-800';
+    'inline font-mono rounded py-1 px-1 shadow text-xs bg-gray-400 dark:bg-gray-800';
+  const keyStyle = { width: 'max-content', paddingBottom: '0px' };
 
   // year toggler styles
   const yearToggleAesthetics =
-    'text-lg rounded hover:bg-gray-300 dark-hover:bg-gray-600 p-1';
-  const yearTogglePosition = 'inline cursor-pointer align-middle';
+    'rounded p-2';
+  const yearTogglePosition = 'inline align-middle';
   const yearToggleTransition = 'transition ease-in duration-200';
   const yearToggleStyle = `${yearToggleAesthetics} ${yearTogglePosition} ${yearToggleTransition}`;
-
+  const yearToggleHover =  'cursor-pointer hover:bg-gray-300 dark-hover:bg-gray-600'
 
   // general link hover style
   const linkHover = `hover:text-blue-600 dark-hover:text-orange-500`;
@@ -166,10 +167,23 @@ const CalendarGrid = () => {
       />
 
       <div className="text-center text-gray-800 dark:text-gray-300 pb-4">
-        Pro tip: use&nbsp;<span className={`${keyAesthetics}`}>W</span>, &nbsp;
-        <span className={`${keyAesthetics}`}>A</span>, &nbsp;
-        <span className={`${keyAesthetics}`}>S</span>, and{' '}
-        <span className={`${keyAesthetics}`}>D</span> to navigate the grid.
+        Pro tip: use&nbsp;
+        <div className={`${keyAesthetics}`} style={keyStyle}>
+          W
+        </div>
+        , &nbsp;
+        <div className={`${keyAesthetics}`} style={keyStyle}>
+          A
+        </div>
+        , &nbsp;
+        <div className={`${keyAesthetics}`} style={keyStyle}>
+          S
+        </div>
+        , and{' '}
+        <div className={`${keyAesthetics}`} style={keyStyle}>
+          D
+        </div>{' '}
+        to navigate the grid.
       </div>
 
       <div
@@ -179,19 +193,21 @@ const CalendarGrid = () => {
           className="flex justify-center items-center pt-4 pb-2 dark:text-gray-200"
           style={{ width: 'max-content', margin: '0 auto' }}>
           <div
-            className={`${
-              selectedYear > minYear ? yearToggleStyle : 'text-transparent'
-            }`}>
-            <HiOutlineChevronLeft onClick={lastYear} />
+            className={`${yearToggleStyle} ${
+              selectedYear > minYear ? yearToggleHover : 'text-transparent'
+            }`}
+            onClick={lastYear}>
+            <HiOutlineChevronLeft />
           </div>
-          <div className="align-middle mx-1 select-none shadow-inner px-2 rounded bg-gray-200 dark:bg-gray-700">
+          <div className="align-middle select-none mx-1 text-center shadow-inner py-1 px-2 rounded bg-gray-200 dark:bg-gray-700">
             {selectedYear}
           </div>
           <div
-            className={`${
-              selectedYear < maxYear ? yearToggleStyle : 'text-transparent'
-            }`}>
-            <HiOutlineChevronRight onClick={nextYear} />
+            className={`${yearToggleStyle} ${
+              selectedYear < maxYear ? yearToggleHover : 'text-transparent'
+            }`}
+            onClick={nextYear}>
+            <HiOutlineChevronRight />
           </div>
         </div>
         <div

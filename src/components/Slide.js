@@ -17,18 +17,17 @@ const Slide = ({
 }) => {
 	// slide styles
 	const slideAesthetics = 'shadow-2xl bg-white rounded-lg px-8 py-6';
-	const slideDark = 'dark:bg-gray-800 dark:text-white';
+	const slideDark = 'dark:bg-gray-800 dark:text-gray-200';
 	const slideTransition = 'transition ease-in duration-150';
 	const slideSizing = 'sm:w-3/4 md:w-3/4 lg:w-3/4';
 
 	// day toggler styles
 	const dayToggleAesthetics =
-		'rounded hover:bg-gray-300 dark-hover:bg-gray-600 p-2';
-	const dayTogglePosition = 'cursor-pointer align-middle';
+		'rounded p-2';
+	const dayTogglePosition = 'align-middle';
 	const dayToggleTransition = 'transition ease-in duration-200';
 	const dayToggleStyle = `${dayToggleAesthetics} ${dayTogglePosition} ${dayToggleTransition}`;
-
-	console.log(selectedDate, moment(selectedDate));
+	const dayToggleHover = 'cursor-pointer hover:bg-gray-300 dark-hover:bg-gray-600'
 
 	// general link hover style
 	const linkHover = `hover:text-blue-600 dark-hover:text-orange-500`;
@@ -39,13 +38,14 @@ const Slide = ({
 				className={`max-w-screen-md ${slideAesthetics} ${slideDark} ${slideTransition} ${slideSizing}`}>
 				<div className="flex justify-center items-center text-lg ">
 					<div
-						className={`${
+						className={`${dayToggleStyle} ${
 							moment(selectedDate).add(-1, 'days').isAfter(absoluteEarliestDate)
-								? dayToggleStyle
+								? dayToggleHover
 								: 'text-transparent'
 						}`}
-						style={{ width: 'max-content', height: 'max-content' }}>
-						<HiOutlineChevronLeft onClick={yesterday} />
+						style={{ width: 'max-content', height: 'max-content' }}
+						onClick={yesterday}>
+						<HiOutlineChevronLeft />
 					</div>
 					<div
 						className="align-middle select-none mx-1 text-center shadow-inner py-1 px-2 rounded bg-gray-200 dark:bg-gray-700"
@@ -53,13 +53,14 @@ const Slide = ({
 						{moment(selectedDate).format('MMMM Do, YYYY')}
 					</div>
 					<div
-						className={`${
+						className={`${dayToggleStyle} ${
 							moment(selectedDate).add(1, 'days').isBefore(absoluteLatestDate)
-								? dayToggleStyle
+								? dayToggleHover
 								: 'text-transparent'
 						}`}
-						style={{ width: 'max-content', height: 'max-content' }}>
-						<HiOutlineChevronRight onClick={tomorrow} />
+						style={{ width: 'max-content', height: 'max-content' }}
+						onClick={tomorrow}>
+						<HiOutlineChevronRight />
 					</div>
 				</div>
 				<div>
