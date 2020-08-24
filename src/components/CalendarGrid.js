@@ -36,7 +36,7 @@ const CalendarGrid = () => {
   );
 
   // current date to display
-  const [selectedDate, _setSelectedDate] = useState(datesByWeek[0][0]);
+  const [selectedDate, _setSelectedDate] = useState(moment());
 
   // use ref to for handlers
   const selectedDateRef = React.useRef(selectedDate);

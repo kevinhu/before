@@ -83,7 +83,7 @@ const Slide = ({
 											href={`https://news.ycombinator.com/item?id=${repo.objectID}`}
 											target="_blank">
 											<div
-												className="rounded border-solid border-2 border-gray-500 h-auto flex"
+												className="rounded border-solid border-2 border-gray-400 h-auto flex"
 												style={{ width: 'fit-content' }}>
 												<FaHackerNewsSquare />
 												<div className="text-sm px-1">{repo.points}</div>
