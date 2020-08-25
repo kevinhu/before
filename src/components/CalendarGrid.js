@@ -15,7 +15,7 @@ const CalendarGrid = ({
   setSelectedDate,
   minYear,
   maxYear,
-  datesByWeek,
+  datesByWeek
 }) => {
   // year incrementers
   const changeYear = (increment) => {

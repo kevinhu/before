@@ -13,6 +13,9 @@ import DarkModeToggle from 'react-dark-mode-toggle';
 // Global css
 import './App.css';
 
+// Window dimensions
+import WindowDimensionsProvider from './components/WindowDimensionsProvider';
+
 function App() {
   const [theme, toggleTheme, componentMounted] = useDarkMode();
 
@@ -37,47 +40,49 @@ function App() {
 
   return (
     <Router>
-      <div
-        className="text-center w-screen pt-8 bg-gray-200 dark:bg-gray-700"
-        style={{ marginBottom: '-1rem' }}>
-        <DarkModeToggle
-          onChange={toggleTheme}
-          checked={theme === 'dark'}
-          size={'3rem'}
-          speed={5}
-        />
-      </div>
-      <Switch>
-        {/* Public Routes */}
-        <Route exact path="/before">
-          {<Explore />}
-        </Route>
+      <WindowDimensionsProvider>
+        <div
+          className="text-center w-screen pt-8 bg-gray-200 dark:bg-gray-700"
+          style={{ marginBottom: '-1rem' }}>
+          <DarkModeToggle
+            onChange={toggleTheme}
+            checked={theme === 'dark'}
+            size={'3rem'}
+            speed={5}
+          />
+        </div>
+        <Switch>
+          {/* Public Routes */}
+          <Route exact path="/before">
+            {<Explore />}
+          </Route>
 
-        {/* Catch-all Route */}
-        <Route path="/">
-          <NotFound />
-        </Route>
-      </Switch>
-      <div className="text-center pb-12 text-gray-800 dark:text-gray-200">
-        Made by{' '}
-        <a
-          className={`underline ${linkHover}`}
-          href="https://kevinhu.io"
-          target="_blank"
-          rel="noopener noreferrer">
-          Kevin Hu
-        </a>
-        <br />
-        View{' '}
-        <a
-          className={`underline ${linkHover}`}
-          href="https://github.com/kevinhu/before"
-          target="_blank"
-          rel="noopener noreferrer">
-          source
-        </a>{' '}
-        on GitHub
-      </div>
+          {/* Catch-all Route */}
+          <Route path="/">
+            <NotFound />
+          </Route>
+        </Switch>
+        <div className="text-center pb-12 text-gray-800 dark:text-gray-200">
+          Made by{' '}
+          <a
+            className={`underline ${linkHover}`}
+            href="https://kevinhu.io"
+            target="_blank"
+            rel="noopener noreferrer">
+            Kevin Hu
+          </a>
+          <br />
+          View{' '}
+          <a
+            className={`underline ${linkHover}`}
+            href="https://github.com/kevinhu/before"
+            target="_blank"
+            rel="noopener noreferrer">
+            source
+          </a>{' '}
+          on GitHub
+        </div>
+      </WindowDimensionsProvider>
     </Router>
   );
 }

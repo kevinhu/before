@@ -7,8 +7,12 @@ import { FaHackerNewsSquare } from 'react-icons/fa';
 
 import NoRepos from '../assets/cat-in-space.svg';
 
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
 const Slide = ({
 	selectedDate,
+	setSelectedDate,
 	absoluteEarliestDate,
 	absoluteLatestDate,
 	yesterday,
@@ -32,6 +36,23 @@ const Slide = ({
 	// general link hover style
 	const linkHover = `hover:text-blue-600 dark-hover:text-orange-500`;
 
+	// date selector styles
+	const dateSelectorTransition = 'transition ease-in duration-150';
+	const dateSelectorAesthetics =
+		'cursor-pointer select-none rounded text-gray-800 dark:text-gray-200 bg-gray-200 dark:bg-gray-700';
+	const dateSelectorPosition = 'mx-1 py-1 px-2 text-center align-middle';
+	const dateSelectorHover =
+		'hover:shadow hover:bg-gray-300 dark-hover:bg-gray-600';
+
+	const DateSelector = ({ value, onClick }) => (
+		<div
+			className={`${dateSelectorTransition} ${dateSelectorAesthetics} ${dateSelectorPosition} ${dateSelectorHover}`}
+			style={{ width: 'max-content' }}
+			onClick={onClick}>
+			{moment(value).format('MMMM Do, YYYY')}
+		</div>
+	);
+
 	return (
 		<div className="flex items-center justify-center w-screen pt-12 pb-12">
 			<div
@@ -47,11 +68,18 @@ const Slide = ({
 						onClick={yesterday}>
 						<HiOutlineChevronLeft />
 					</div>
-					<div
-						className="align-middle select-none mx-1 text-center shadow-inner py-1 px-2 rounded bg-gray-200 dark:bg-gray-700"
-						style={{ width: 'max-content' }}>
-						{moment(selectedDate).format('MMMM Do, YYYY')}
-					</div>
+					<DatePicker
+						selected={selectedDate.toDate()}
+						onChange={(date) => setSelectedDate(moment(date))}
+						peekNextMonth
+						showMonthDropdown
+						showYearDropdown
+						dropdownMode="select"
+						minDate={absoluteEarliestDate.clone().add(1, 'day').toDate()}
+						maxDate={absoluteLatestDate.clone().add(-1, 'day').toDate()}
+						customInput={<DateSelector />}
+						popperPlacement="bottom-center"
+					/>
 					<div
 						className={`${dayToggleStyle} ${
 							moment(selectedDate).add(1, 'days').isBefore(absoluteLatestDate)

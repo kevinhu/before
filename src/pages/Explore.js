@@ -8,6 +8,7 @@ import moment from 'moment';
 
 import Slide from '../components/Slide';
 import CalendarGrid from '../components/CalendarGrid';
+import { useWindowDimensions } from '../components/WindowDimensionsProvider';
 
 import { useHistory, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
@@ -17,6 +18,13 @@ import hackernewsDaily from '../assets/hackernews_github.json';
 const DATE_KEY_FORMAT = 'YYYY-MM-DD';
 
 function Explore() {
+	// get screen dimensions
+	const { width } = useWindowDimensions();
+
+	// if the calendar grid is too wide for the screen
+	var tooNarrow = width < 1080;
+
+	// initialize url params
 	let history = useHistory();
 	let location = useLocation();
 	let params = queryString.parse(location.search);
@@ -137,38 +145,42 @@ function Explore() {
 					offset={{ top: -6 }}
 				/>
 
-				<div className="text-center text-gray-700 dark:text-gray-400 pb-6 pt-2">
-					Pro tip: use&nbsp;
-					<div className={`${keyAesthetics}`} style={keyStyle}>
-						W
-					</div>
-					, &nbsp;
-					<div className={`${keyAesthetics}`} style={keyStyle}>
-						A
-					</div>
-					, &nbsp;
-					<div className={`${keyAesthetics}`} style={keyStyle}>
-						S
-					</div>
-					, and{' '}
-					<div className={`${keyAesthetics}`} style={keyStyle}>
-						D
-					</div>{' '}
-					to navigate the grid.
-				</div>
-
-				<CalendarGrid
-					selectedYear={selectedYear}
-					setSelectedYear={setSelectedYear}
-					selectedDate={selectedDate}
-					setSelectedDate={setSelectedDate}
-					minYear={minYear}
-					maxYear={maxYear}
-					datesByWeek={datesByWeek}
-				/>
+				{!tooNarrow && (
+					<React.Fragment>
+						<div className="text-center text-gray-700 dark:text-gray-400 pb-6 pt-2">
+							Pro tip: use&nbsp;
+							<div className={`${keyAesthetics}`} style={keyStyle}>
+								W
+							</div>
+							, &nbsp;
+							<div className={`${keyAesthetics}`} style={keyStyle}>
+								A
+							</div>
+							, &nbsp;
+							<div className={`${keyAesthetics}`} style={keyStyle}>
+								S
+							</div>
+							, and{' '}
+							<div className={`${keyAesthetics}`} style={keyStyle}>
+								D
+							</div>{' '}
+							to navigate the grid.
+						</div>
+						<CalendarGrid
+							selectedYear={selectedYear}
+							setSelectedYear={setSelectedYear}
+							selectedDate={selectedDate}
+							setSelectedDate={setSelectedDate}
+							minYear={minYear}
+							maxYear={maxYear}
+							datesByWeek={datesByWeek}
+						/>
+					</React.Fragment>
+				)}
 
 				<Slide
 					selectedDate={selectedDate}
+					setSelectedDate={setSelectedDate}
 					absoluteEarliestDate={absoluteEarliestDate}
 					absoluteLatestDate={absoluteLatestDate}
 					yesterday={yesterday}
