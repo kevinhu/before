@@ -23,7 +23,7 @@ const Slide = ({
 	const slideAesthetics = 'shadow-2xl bg-white rounded-lg px-8 py-6';
 	const slideDark = 'dark:bg-gray-800 dark:text-gray-200';
 	const slideTransition = 'transition ease-in duration-150';
-	const slideSizing = 'sm:w-3/4 md:w-3/4 lg:w-3/4';
+	const slideSizing = 'w-full sm:w-3/4 md:w-3/4 lg:w-3/4 xl:w-1/2';
 
 	// day toggler styles
 	const dayToggleAesthetics = 'rounded p-2';
@@ -127,9 +127,9 @@ const Slide = ({
 						<div className="text-center w-full">
 							<img
 								alt="No repos found."
-								className="py-2 w-1/2 m-auto select-none"
+								className="py-2 w-3/4 md:w-1/2 m-auto select-none"
 								src={NoRepos}></img>
-							<div className="select-none">No repos found.</div>
+							<div className="text-lg select-none mb-6">No repos found.</div>
 						</div>
 					)}
 				</div>
