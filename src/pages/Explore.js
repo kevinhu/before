@@ -39,11 +39,11 @@ function Explore() {
 		date = moment(date, DATE_KEY_FORMAT);
 		if (!date.isValid()) {
 			date = moment();
-			history.push(`/before?date=${date.format(DATE_KEY_FORMAT)}`);
+			history.push(`?date=${date.format(DATE_KEY_FORMAT)}`);
 		}
 	} else {
 		date = moment();
-		history.push(`/before?date=${date.format(DATE_KEY_FORMAT)}`);
+		history.push(`?date=${date.format(DATE_KEY_FORMAT)}`);
 	}
 
 	// current date to display
@@ -64,7 +64,7 @@ function Explore() {
 	const setSelectedDate = (date) => {
 		selectedDateRef.current = date;
 		_setSelectedDate(date);
-		history.push(`/before?date=${date.format(DATE_KEY_FORMAT)}`);
+		history.push(`?date=${date.format(DATE_KEY_FORMAT)}`);
 	};
 
 	// general date incrementer

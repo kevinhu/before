@@ -53,7 +53,7 @@ function App() {
         </div>
         <Switch>
           {/* Public Routes */}
-          <Route exact path="/before">
+          <Route exact path="/">
             {<Explore />}
           </Route>
 
