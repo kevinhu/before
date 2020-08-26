@@ -42,7 +42,7 @@ function Explore() {
 	const setSelectedDate = (date) => {
 		selectedDateRef.current = date;
 		_setSelectedDate(date);
-		
+
 		// only update the url if the new date is different
 		// otherwise, history breaks
 		if (params.date !== date.format(DATE_KEY_FORMAT)) {
@@ -56,7 +56,8 @@ function Explore() {
 			setSelectedDate(parsedDate);
 		}
 	} else {
-		history.push(`/?date=${DEFAULT_DATE.format(DATE_KEY_FORMAT)}`);
+		// replace, not push so going back does not constantly redirect
+		history.replace(`/?date=${DEFAULT_DATE.format(DATE_KEY_FORMAT)}`);
 	}
 
 	// dates for grid
