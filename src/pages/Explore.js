@@ -16,6 +16,7 @@ import queryString from 'query-string';
 import hackernewsDaily from '../assets/hackernews_github.json';
 
 const DATE_KEY_FORMAT = 'YYYY-MM-DD';
+const DEFAULT_DATE = moment().startOf('month');
 
 function Explore() {
 	// get screen dimensions
@@ -33,21 +34,30 @@ function Explore() {
 	const minYear = 2008;
 	const maxYear = moment().year();
 
-	let date = params.date;
+	// current date to display
+	const [selectedDate, _setSelectedDate] = useState(DEFAULT_DATE);
 
-	if (date) {
-		date = moment(date, DATE_KEY_FORMAT);
-		if (!date.isValid()) {
-			date = moment();
-			history.push(`?date=${date.format(DATE_KEY_FORMAT)}`);
+	// use ref to for handlers and URL
+	const selectedDateRef = React.useRef(selectedDate);
+	const setSelectedDate = (date) => {
+		selectedDateRef.current = date;
+		_setSelectedDate(date);
+		
+		// only update the url if the new date is different
+		// otherwise, history breaks
+		if (params.date !== date.format(DATE_KEY_FORMAT)) {
+			history.push(`/?date=${date.format(DATE_KEY_FORMAT)}`);
+		}
+	};
+
+	if (params.date && moment(params.date, DATE_KEY_FORMAT).isValid()) {
+		let parsedDate = moment(params.date, DATE_KEY_FORMAT);
+		if (!parsedDate.isSame(selectedDate)) {
+			setSelectedDate(parsedDate);
 		}
 	} else {
-		date = moment();
-		history.push(`?date=${date.format(DATE_KEY_FORMAT)}`);
+		history.push(`/?date=${DEFAULT_DATE.format(DATE_KEY_FORMAT)}`);
 	}
-
-	// current date to display
-	const [selectedDate, _setSelectedDate] = useState(date);
 
 	// dates for grid
 	let datesByWeek = daysInYearByWeek(selectedDate.year());
@@ -55,14 +65,6 @@ function Explore() {
 	// absolute grid bounds
 	let absoluteEarliestDate = moment({ year: minYear - 1, month: 11, date: 31 });
 	let absoluteLatestDate = moment({ year: maxYear + 1, month: 0, date: 1 });
-
-	// use ref to for handlers and URL
-	const selectedDateRef = React.useRef(selectedDate);
-	const setSelectedDate = (date) => {
-		selectedDateRef.current = date;
-		_setSelectedDate(date);
-		history.push(`?date=${date.format(DATE_KEY_FORMAT)}`);
-	};
 
 	// general date incrementer
 	const incrementDay = (increment) => {
