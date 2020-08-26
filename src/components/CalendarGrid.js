@@ -9,34 +9,21 @@ import hackernewsDaily from '../assets/hackernews_github.json';
 const DATE_KEY_FORMAT = 'YYYY-MM-DD';
 
 const CalendarGrid = ({
-  selectedYear,
-  setSelectedYear,
   selectedDate,
   setSelectedDate,
   minYear,
   maxYear,
-  datesByWeek
+  datesByWeek,
 }) => {
-  // year incrementers
-  const changeYear = (increment) => {
-    let targetYear = selectedYear + increment;
-
-    if (targetYear >= minYear && targetYear <= maxYear) {
-      setSelectedYear(selectedYear + increment);
-    }
-  };
-
   const lastYear = () => {
-    if (selectedYear > minYear) {
+    if (selectedDate.year() > minYear) {
       setSelectedDate(selectedDate.clone().add(-1, 'years'));
-      changeYear(-1);
     }
   };
 
   const nextYear = () => {
-    if (selectedYear < maxYear) {
+    if (selectedDate.year() < maxYear) {
       setSelectedDate(selectedDate.clone().add(1, 'years'));
-      changeYear(1);
     }
   };
 
@@ -69,17 +56,17 @@ const CalendarGrid = ({
         style={{ width: 'max-content', margin: '0 auto' }}>
         <div
           className={`${yearToggleStyle} ${
-            selectedYear > minYear ? yearToggleHover : 'text-transparent'
+            selectedDate.year() > minYear ? yearToggleHover : 'text-transparent'
           }`}
           onClick={lastYear}>
           <HiOutlineChevronLeft />
         </div>
         <div className="align-middle select-none mx-1 text-center shadow-inner py-1 px-2 rounded bg-gray-200 dark:bg-gray-700">
-          {selectedYear}
+          {selectedDate.year()}
         </div>
         <div
           className={`${yearToggleStyle} ${
-            selectedYear < maxYear ? yearToggleHover : 'text-transparent'
+            selectedDate.year() < maxYear ? yearToggleHover : 'text-transparent'
           }`}
           onClick={nextYear}>
           <HiOutlineChevronRight />
@@ -103,7 +90,7 @@ const CalendarGrid = ({
                   key={dateIndex}>
                   <div
                     className={`${
-                      date.year() === selectedYear
+                      date.year() === selectedDate.year()
                         ? 'cursor-pointer bg-gray-400 dark:bg-gray-600'
                         : gridDisabled
                     } ${gridSizing} ${gridTransition}`}
@@ -116,15 +103,17 @@ const CalendarGrid = ({
                     }}
                     data-date={date}
                     data-tip={
-                      date.year() === selectedYear
+                      date.year() === selectedDate.year()
                         ? date.format('MMMM Do, YYYY')
                         : ''
                     }
                     onClick={
-                      date.year() === selectedYear ? gridClick : undefined
+                      date.year() === selectedDate.year()
+                        ? gridClick
+                        : undefined
                     }></div>
                   {date.date() <= 7 &&
-                  (date.week() !== 1 || date.year() > selectedYear) ? (
+                  (date.week() !== 1 || date.year() > selectedDate.year()) ? (
                     <div
                       className={`bg-blue-400 dark:bg-orange-400 h-full inset-0`}
                       style={{

@@ -49,11 +49,8 @@ function Explore() {
 	// current date to display
 	const [selectedDate, _setSelectedDate] = useState(date);
 
-	// year to display
-	const [selectedYear, setSelectedYear] = useState(selectedDate.year());
-
 	// dates for grid
-	let datesByWeek = daysInYearByWeek(selectedYear);
+	let datesByWeek = daysInYearByWeek(selectedDate.year());
 
 	// absolute grid bounds
 	let absoluteEarliestDate = moment({ year: minYear - 1, month: 11, date: 31 });
@@ -77,7 +74,6 @@ function Explore() {
 			targetDate.isAfter(absoluteEarliestDate) &&
 			targetDate.isBefore(absoluteLatestDate)
 		) {
-			setSelectedYear(targetDate.year());
 			setSelectedDate(targetDate);
 		}
 	};
@@ -118,6 +114,8 @@ function Explore() {
 		'inline text-center font-mono rounded pt-1 pb-1 px-2 shadow-sm text-xs bg-gray-400 dark:bg-gray-800';
 	const keyStyle = { width: 'max-content' };
 
+	const descriptionSizing = 'max-w-full sm:max-w-full md:max-w-3/4 lg:max-w-3/4 xl:max-w-1/2'
+
 	// fetch repos for selected date
 	const dateKey = selectedDate.format(DATE_KEY_FORMAT);
 	const selectedHackernews = hackernewsDaily[dateKey];
@@ -126,10 +124,10 @@ function Explore() {
 		<div className="min-h-full">
 			<div className="min-h-full">
 				<div
-					className="p-2 text-center text-gray-800 dark:text-gray-300 mx-auto max-w-full"
+					className={`p-2 text-center text-gray-800 dark:text-gray-300 mx-auto ${descriptionSizing}`}
 					style={{ width: 'max-content' }}>
 					Explore daily trending GitHub repositories from Hacker News on every
-					day since 2008. Updated monthly.
+					day since 2008. Updated monthly. Best when viewed on desktop.
 				</div>
 				<GlobalHotKeys
 					keyMap={keyMap}
@@ -165,8 +163,6 @@ function Explore() {
 							to navigate the grid.
 						</div>
 						<CalendarGrid
-							selectedYear={selectedYear}
-							setSelectedYear={setSelectedYear}
 							selectedDate={selectedDate}
 							setSelectedDate={setSelectedDate}
 							minYear={minYear}
