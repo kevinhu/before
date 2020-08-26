@@ -128,7 +128,7 @@ function Explore() {
 				<div
 					className="p-2 text-center text-gray-800 dark:text-gray-300 mx-auto max-w-full"
 					style={{ width: 'max-content' }}>
-					Explore daily trending GitHub repositories from Hacker News on every
+					Daily trending GitHub repositories from Hacker News on every
 					day since 2008. Updated monthly.
 				</div>
 				<GlobalHotKeys
