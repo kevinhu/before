@@ -1,5 +1,5 @@
-# [before](http://kevinhu.io/before)
-Archive of historically trending GitHub repositories on Hacker News. See it live at http://kevinhu.io/before.
+# [before](http://before.kevinhu.io)
+Archive of historically trending GitHub repositories on Hacker News. See it live at http://before.kevinhu.io.
 
 ## Overview
 

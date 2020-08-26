@@ -39,11 +39,11 @@ function Explore() {
 		date = moment(date, DATE_KEY_FORMAT);
 		if (!date.isValid()) {
 			date = moment();
-			history.push(`/before?date=${date.format(DATE_KEY_FORMAT)}`);
+			history.push(`?date=${date.format(DATE_KEY_FORMAT)}`);
 		}
 	} else {
 		date = moment();
-		history.push(`/before?date=${date.format(DATE_KEY_FORMAT)}`);
+		history.push(`?date=${date.format(DATE_KEY_FORMAT)}`);
 	}
 
 	// current date to display
@@ -61,7 +61,7 @@ function Explore() {
 	const setSelectedDate = (date) => {
 		selectedDateRef.current = date;
 		_setSelectedDate(date);
-		history.push(`/before?date=${date.format(DATE_KEY_FORMAT)}`);
+		history.push(`?date=${date.format(DATE_KEY_FORMAT)}`);
 	};
 
 	// general date incrementer
@@ -114,7 +114,8 @@ function Explore() {
 		'inline text-center font-mono rounded pt-1 pb-1 px-2 shadow-sm text-xs bg-gray-400 dark:bg-gray-800';
 	const keyStyle = { width: 'max-content' };
 
-	const descriptionSizing = 'max-w-full sm:max-w-full md:max-w-3/4 lg:max-w-3/4 xl:max-w-1/2'
+	const descriptionSizing =
+		'max-w-full sm:max-w-full md:max-w-3/4 lg:max-w-3/4 xl:max-w-1/2';
 
 	// fetch repos for selected date
 	const dateKey = selectedDate.format(DATE_KEY_FORMAT);

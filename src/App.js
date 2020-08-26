@@ -53,7 +53,7 @@ function App() {
         </div>
         <Switch>
           {/* Public Routes */}
-          <Route exact path="/before">
+          <Route exact path="/">
             {<Explore />}
           </Route>
 
@@ -72,13 +72,12 @@ function App() {
             Kevin Hu
           </a>
           <br />
-          View{' '}
           <a
             className={`underline ${linkHover}`}
             href="https://github.com/kevinhu/before"
             target="_blank"
             rel="noopener noreferrer">
-            source
+            Source
           </a>{' '}
           on GitHub
         </div>
