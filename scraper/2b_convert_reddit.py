@@ -1,8 +1,8 @@
 import glob
-from tqdm import tqdm
-import pandas as pd
 
 import config
+import pandas as pd
+from tqdm import tqdm
 
 relevant_columns = [
     "author",
@@ -14,7 +14,7 @@ relevant_columns = [
     "subreddit",
     "title",
     "url",
-    "selftext"
+    "selftext",
 ]
 
 
@@ -31,11 +31,13 @@ def merge_chunks(jsons_dir, out_filename):
 
         merged_comments.append(comments)
 
-    merged = pd.concat(merged_comments, axis=0)
-    merged = merged.drop_duplicates(subset=["full_link"], keep="first")
-    merged = merged.sort_values(by="created_utc")
-    merged = merged.reset_index(drop=True)
-    merged = merged.astype(str)
+    merged = (
+        pd.concat(merged_comments, axis=0)
+        .drop_duplicates(subset=["full_link"], keep="first")
+        .sort_values(by="created_utc")
+        .reset_index(drop=True)
+        .astype(str)
+    )
     merged["created_utc"] = merged["created_utc"].astype(int)
     merged["score"] = merged["score"].astype(float)
     merged["num_comments"] = merged["num_comments"].astype(float)

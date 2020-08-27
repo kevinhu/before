@@ -1,8 +1,8 @@
 import glob
-from tqdm import tqdm
-import pandas as pd
 
 import config
+import pandas as pd
+from tqdm import tqdm
 
 relevant_columns = [
     "title",
@@ -34,11 +34,14 @@ def merge_chunks(jsons_dir, out_filename):
 
         merged_comments.append(comments)
 
-    merged = pd.concat(merged_comments, axis=0)
-    merged = merged.drop_duplicates(subset=["objectID"], keep="first")
-    merged = merged.sort_values(by="created_at_i")
-    merged = merged.reset_index(drop=True)
-    merged = merged.astype(str)
+    merged = (
+        pd.concat(merged_comments, axis=0)
+        .drop_duplicates(subset=["objectID"], keep="first")
+        .sort_values(by="created_at_i")
+        .reset_index(drop=True)
+        .astype(str)
+    )
+
     merged["created_at_i"] = merged["created_at_i"].astype(int)
     merged["points"] = merged["points"].astype(float)
 
