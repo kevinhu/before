@@ -7,7 +7,7 @@ Archive of historically trending GitHub repositories on Hacker News. See it live
 
 ## How it works
 
-1. Hacker News posts mentioning 'github.com' are scraped from the [Algolia API](https://hn.algolia.com/api) in `scraper/1a_fetch_hackernews.py`. It takes about an hour to download every post since 2008, which is when GitHub was founded.
+1. Hacker News posts mentioning 'github.com' are scraped from the [Algolia API](https://hn.algolia.com/api) in `scraper/1a_fetch_hackernews.py`. It takes about five minutes to download every post since 2008, which is when GitHub was founded.
 2. The raw JSON files from the Algolia API are consolidated and stored in `.feather` format for fast loading in `scraper/2a_convert_hackernews.py`.
 3. The consolidated posts are grouped by day, sorted in descending popularity, and output to a single JSON file for the web client by `scraper/3a_aggregate_hackernews.py`.
 4. The web client takes the `.json` file and uses it to render the posts. This is a standard React app that is deployed to GitHub pages. After compiling with webpack and compressing, the total size of the site is about 7 MB.
