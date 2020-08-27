@@ -10,7 +10,7 @@ import NotFound from './pages/NotFound';
 import { useDarkMode } from './components/DarkMode';
 import DarkModeToggle from 'react-dark-mode-toggle';
 
-// Global css
+// Global CSS
 import './App.css';
 
 // Window dimensions
@@ -42,7 +42,7 @@ function App() {
     <Router>
       <WindowDimensionsProvider>
         <div
-          className="text-center w-screen pt-8 bg-gray-200 dark:bg-gray-700"
+          className="text-center w-screen pt-8"
           style={{ marginBottom: '-1rem' }}>
           <DarkModeToggle
             onChange={toggleTheme}
