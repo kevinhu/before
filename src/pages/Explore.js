@@ -16,6 +16,7 @@ import queryString from 'query-string';
 import hackernewsDaily from '../assets/hackernews_github.json';
 
 const DATE_KEY_FORMAT = 'YYYY-MM-DD';
+const DEFAULT_DATE = moment().startOf('month');
 
 function Explore() {
 	// get screen dimensions
@@ -33,39 +34,38 @@ function Explore() {
 	const minYear = 2008;
 	const maxYear = moment().year();
 
-	let date = params.date;
-
-	if (date) {
-		date = moment(date, DATE_KEY_FORMAT);
-		if (!date.isValid()) {
-			date = moment();
-			history.push(`?date=${date.format(DATE_KEY_FORMAT)}`);
-		}
-	} else {
-		date = moment();
-		history.push(`?date=${date.format(DATE_KEY_FORMAT)}`);
-	}
-
 	// current date to display
-	const [selectedDate, _setSelectedDate] = useState(date);
-
-	// year to display
-	const [selectedYear, setSelectedYear] = useState(selectedDate.year());
-
-	// dates for grid
-	let datesByWeek = daysInYearByWeek(selectedYear);
-
-	// absolute grid bounds
-	let absoluteEarliestDate = moment({ year: minYear - 1, month: 11, date: 31 });
-	let absoluteLatestDate = moment({ year: maxYear + 1, month: 0, date: 1 });
+	const [selectedDate, _setSelectedDate] = useState(DEFAULT_DATE);
 
 	// use ref to for handlers and URL
 	const selectedDateRef = React.useRef(selectedDate);
 	const setSelectedDate = (date) => {
 		selectedDateRef.current = date;
 		_setSelectedDate(date);
-		history.push(`?date=${date.format(DATE_KEY_FORMAT)}`);
+
+		// only update the url if the new date is different
+		// otherwise, history breaks
+		if (params.date !== date.format(DATE_KEY_FORMAT)) {
+			history.push(`/?date=${date.format(DATE_KEY_FORMAT)}`);
+		}
 	};
+
+	if (params.date && moment(params.date, DATE_KEY_FORMAT).isValid()) {
+		let parsedDate = moment(params.date, DATE_KEY_FORMAT);
+		if (!parsedDate.isSame(selectedDate)) {
+			setSelectedDate(parsedDate);
+		}
+	} else {
+		// replace, not push so going back does not constantly redirect
+		history.replace(`/?date=${DEFAULT_DATE.format(DATE_KEY_FORMAT)}`);
+	}
+
+	// dates for grid
+	let datesByWeek = daysInYearByWeek(selectedDate.year());
+
+	// absolute grid bounds
+	let absoluteEarliestDate = moment({ year: minYear - 1, month: 11, date: 31 });
+	let absoluteLatestDate = moment({ year: maxYear + 1, month: 0, date: 1 });
 
 	// general date incrementer
 	const incrementDay = (increment) => {
@@ -77,7 +77,6 @@ function Explore() {
 			targetDate.isAfter(absoluteEarliestDate) &&
 			targetDate.isBefore(absoluteLatestDate)
 		) {
-			setSelectedYear(targetDate.year());
 			setSelectedDate(targetDate);
 		}
 	};
@@ -118,6 +117,9 @@ function Explore() {
 		'inline text-center font-mono rounded pt-1 pb-1 px-2 shadow-sm text-xs bg-gray-400 dark:bg-gray-800';
 	const keyStyle = { width: 'max-content' };
 
+	const descriptionSizing =
+		'max-w-full sm:max-w-full md:max-w-3/4 lg:max-w-3/4 xl:max-w-1/2';
+
 	// fetch repos for selected date
 	const dateKey = selectedDate.format(DATE_KEY_FORMAT);
 	const selectedHackernews = hackernewsDaily[dateKey];
@@ -126,10 +128,10 @@ function Explore() {
 		<div className="min-h-full">
 			<div className="min-h-full">
 				<div
-					className="p-2 text-center text-gray-800 dark:text-gray-300 mx-auto max-w-full"
+					className={`p-2 text-center text-gray-800 dark:text-gray-300 mx-auto ${descriptionSizing}`}
 					style={{ width: 'max-content' }}>
-					Daily trending GitHub repositories from Hacker News on every
-					day since 2008. Updated monthly.
+					Explore daily trending GitHub repositories from Hacker News on every
+					day since 2008. Updated monthly. Best when viewed on desktop.
 				</div>
 				<GlobalHotKeys
 					keyMap={keyMap}
@@ -165,8 +167,6 @@ function Explore() {
 							to navigate the grid.
 						</div>
 						<CalendarGrid
-							selectedYear={selectedYear}
-							setSelectedYear={setSelectedYear}
 							selectedDate={selectedDate}
 							setSelectedDate={setSelectedDate}
 							minYear={minYear}

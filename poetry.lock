@@ -953,7 +953,7 @@ version = "3.5.1"
 notebook = ">=4.4.1"
 
 [metadata]
-content-hash = "95e1d8129b5e7389db3341b4ff6a7ff8a5f016d0108d9a3ff58210f302b4e92c"
+content-hash = "89be91de8efe6d04dadc709d1c07bb7c1bb1e961cdc60c824de00a879313304d"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -1343,6 +1343,7 @@ pyarrow = [
     {file = "pyarrow-1.0.0-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:5c8fd00e72ccf76de75beaf4c413f25d9516610b23090c74be4fc871e570cf22"},
     {file = "pyarrow-1.0.0-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:affc0731016dd74d13b040e76d983eb45f1870df231f0f61b3fe44988cdbb44c"},
     {file = "pyarrow-1.0.0-cp38-cp38-win_amd64.whl", hash = "sha256:f0a0439890f8d11afca36e756747877d864e1cbd774dd7f75ba3e871719fa5e6"},
+    {file = "pyarrow-1.0.0.tar.gz", hash = "sha256:5ae4da65ba94d27cd1f1d583186de42511061f430f09bd112843c03ac3bcf9d0"},
 ]
 pycparser = [
     {file = "pycparser-2.20-py2.py3-none-any.whl", hash = "sha256:7582ad22678f0fcd81102833f60ef8d0e57288b6b5fb00323d101be910e35705"},
