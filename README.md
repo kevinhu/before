@@ -16,13 +16,13 @@ Archive of historically trending GitHub repositories on Hacker News. See it live
 
 ### Scraper
 
-1. Install Python dependencies with `poetry install`.
+1. Install Python dependencies with `poetry install`
 2. Activate virtual environment with `poetry shell`
 
 ### Frontend
 
-1. Install JavaScript dependencies with `yarn install`.
-2. Start the client with `yarn start`.
+1. Install JavaScript dependencies with `yarn install`
+2. Start the client with `yarn start`
 
 Note that the scraper and frontend are more or less independent with the exception of the final `.json` output.
 
