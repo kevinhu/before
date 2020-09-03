@@ -3,7 +3,7 @@ Archive of historically trending GitHub repositories on Hacker News. See it live
 
 ## Overview
 
-[Hacker News](https://news.ycombinator.com/news) is a great place to find high-quality GitHub repositories However, posted repositories are quickly pushed out by new submissions, making older ones hard to discover. This project scrapes and presents all linked GitHub repositories since inception.
+[Hacker News](https://news.ycombinator.com/news) is a great place to find high-quality GitHub repositories. However, posted repositories are quickly pushed out by new submissions, making older ones hard to discover. This project scrapes and presents all linked GitHub repositories since inception.
 
 ## How it works
 
