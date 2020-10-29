@@ -1,4 +1,6 @@
 # [before](https://before.kevinhu.io)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkevinhu%2Fbefore.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkevinhu%2Fbefore?ref=badge_shield)
+
 Archive of historically trending GitHub repositories on Hacker News. See it live at https://before.kevinhu.io.
 
 ## Overview
@@ -29,3 +31,7 @@ Note that the scraper and frontend are more or less independent with the excepti
 ## Additional
 
 Initially, I also intended to use Reddit posts as an orthogonal source of recommendations. However, I found that Reddit's linked repositories are usually of much lower quality and included many bots, so I no longer consider them.
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkevinhu%2Fbefore.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkevinhu%2Fbefore?ref=badge_large)
