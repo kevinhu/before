@@ -51,6 +51,6 @@
     "postcss": "^7.0.32",
     "postcss-cli": "^7.1.1",
     "tailwindcss": "^1.7.3",
-    "tailwindcss-dark-mode": "^1.1.6"
+    "tailwindcss-dark-mode": "^1.1.7"
   }
 }
