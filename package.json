@@ -8,7 +8,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^12.6.0",
     "eslint-plugin-react": "^7.20.6",
-    "moment": "^2.27.0",
+    "moment": "^2.29.1",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-dark-mode-toggle": "^0.0.9",
