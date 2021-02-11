@@ -6,7 +6,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
-    "@testing-library/user-event": "^12.6.2",
+    "@testing-library/user-event": "^12.7.0",
     "eslint-plugin-react": "^7.22.0",
     "moment": "^2.29.1",
     "query-string": "^6.13.8",
