@@ -6,7 +6,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.8.0",
+    "@testing-library/user-event": "^13.2.1",
     "eslint-plugin-react": "^7.22.0",
     "moment": "^2.29.1",
     "query-string": "^6.14.1",
@@ -18,7 +18,7 @@
     "react-icons": "^4.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "react-tooltip": "^4.2.15"
+    "react-tooltip": "^4.2.21"
   },
   "scripts": {
     "start": "npm run watch:css && react-scripts start",
@@ -48,9 +48,9 @@
   "devDependencies": {
     "autoprefixer": "^10.3.1",
     "gh-pages": "^3.1.0",
-    "postcss": "^8.2.6",
+    "postcss": "^8.3.6",
     "postcss-cli": "^8.3.1",
-    "tailwindcss": "^2.0.3",
+    "tailwindcss": "^2.2.7",
     "tailwindcss-dark-mode": "^1.1.7"
   }
 }
